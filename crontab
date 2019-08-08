@@ -1,0 +1,7 @@
+0 7 * * * django /code/venv/bin/python /code/src/manage.py execute_action --action=EVERY_DAY &> /logs/cron_action_every_day.log
+
+0 1 * * * django /code/venv/bin/python /code/src/manage.py etl_features_to_es >> /logs/cron_etl.log 2>&1
+
+0 */1 * * * django /code/venv/bin/python /code/src/manage.py etl_tm2 >> /logs/cron_etl.log 2>&1
+0 */1 * * * django /code/venv/bin/python /code/src/manage.py etl_tm4 >> /logs/cron_etl.log 2>&1
+

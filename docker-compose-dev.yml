@@ -1,0 +1,44 @@
+version: '3.7'
+x-images:
+  bypass: &bypass
+    command: 'sh -c "while true;do echo notstarted;sleep 65000;done"'
+    entrypoint: 'sh -c "while true;do echo notstarted;sleep 65000;done"'
+    restart: "no"
+services:
+  nginx:
+    ports:
+    - 80:80
+  backup: {<<: [ *bypass ]}
+  django:
+    environment:
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.dev}
+      - NO_MIGRATE=1
+      - NO_COLLECT_STATIC=1
+      - NO_GUNICORN=1
+    volumes:
+      - ./local/terra-back-deploy/prod/sudoer:/etc/sudoers.d/$APP_TYPE
+      - ./local/terra-back-deploy/prod/init.sh:/code/init/init.sh
+      - ./local/terra-back-deploy/prod/start.sh:/code/init/start.sh
+      - ./local/terra-back-deploy/prod/cron.sh:/code/init/cron.sh
+      - ./lib:/code/lib
+      - ./local:/code/local
+      - ./src:/code/src
+      - ./private:/code/private
+      - ./tox.ini:/code/tox.ini
+      - ./.tox:/code/.tox
+      - ./requirements.txt:/code/requirements.txt
+      - ./requirements-dev.txt:/code/requirements-dev.txt
+    ports:
+      - "8000:8000"
+  celery:
+    volumes:
+      - ./lib:/code/lib
+      - ./local:/code/local
+      - ./src:/code/src
+      - ./private:/code/private
+  elasticsearch:
+    hostname: elasticsearch
+    image: elasticsearch:6.4.3
+    environment:
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
+

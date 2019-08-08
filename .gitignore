@@ -1,0 +1,26 @@
+# Python
+*.pyc
+__pycache__
+
+# DJANGO local settings
+/src/project/settings/local.py
+
+# Docker local settings
+/.env
+/docker.env
+/netrc
+
+# IDE settings
+.vscode
+.idea
+
+# Virtualenv
+/venv/
+/.venv/
+/.tox
+
+# corpusops & ansible
+*.retry
+/.ansible/scripts/ansible_deploy_env
+/local/
+!/local/regen.sh

@@ -1,0 +1,9 @@
+image: ubuntu:18.04
+stages:
+  - manual_jobs
+  - build
+  - tests
+  - flag_success
+  - release
+  - teardown
+  - deploy

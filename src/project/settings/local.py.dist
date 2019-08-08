@@ -1,0 +1,63 @@
+# Production
+# ALLOWED_HOSTS = []
+# CORS_ORIGIN_WHITELIST = ()
+# SECRET_KEY = ''
+# DEFAULT_FROM_EMAIL = ''
+# SERVER_EMAIL = ''
+# ADMINS = ()
+SECRET_KEY = 'super-hot-secret-123456789'
+# vim:set ft=python:
+
+
+TILE_HOSTNAME = "<hostname>"
+
+TERRA_TILES_HOSTNAMES = [
+    f'https://{prefix}.{TILE_HOSTNAME}/api/layer/'
+    for prefix in 'abcdefghij'
+]
+
+TERRA_DEFAULT_MAP_SETTINGS = {
+    'accessToken': '<your_mapbox_token>',
+    'backgroundStyle': '<your_background_style>', # mapbox://styles/makinacorpus/cjx0630i50y1d1cpk006a92k9
+    'center': [-2.028, 47.852],
+    'zoom': 7.7,
+    'maxZoom': 19.9,
+    'minZoom': 7,
+    'fitBounds': {
+        'coordinates': [
+            [-4.850, 46.776],
+            [-0.551, 48.886]
+        ],
+    },
+}
+
+TERRA_LAYER_VIEWS = {
+    'first': {
+        'name': 'First',
+        'pk': 1,
+    },
+    'second': {
+        'name': 'Second',
+        'pk': 2,
+    },
+}
+
+TERRA_APPLIANCE_SETTINGS = {
+    'VIEW_ROOT_PATH': 'first',
+    'DEFAULT_VIEWNAME': 1,
+    'enabled_modules': ['User', 'DataSource', 'DataLayer'],
+}
+
+# Mail
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+
+PYFILES_BACKEND = os.environ.get('PYFILES_BACKEND')
+
+PYFILES_BACKEND_OPTIONS = {
+    "access_key": os.environ.get('PYFILES_ACCESS_KEY'),
+    "secret_key": os.environ.get('PYFILES_SECRET_KEY'),
+    "endpoint_url": os.environ.get('PYFILES_ENDPOINT_URL'),
+    "region_name": os.environ.get('PYFILES_REGION_NAME'),
+    "bucket_name": os.environ.get('PYFILES_BUCKET_NAME'),
+}
