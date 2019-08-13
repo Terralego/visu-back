@@ -2,7 +2,6 @@
 
 All following commands must be run only once at project installation.
 
-
 ## First clone
 
 ```sh
@@ -18,10 +17,17 @@ Follow official procedures for
   [docker-compose](https://docs.docker.com/compose/install/).
 
 
+
 ## Configuration
 
 Copy configuration files from their ``.dist`` counterpart
 and adapt them to your needs.
+
+cp Docker.env.dist Docker.env
+
+cp .env.dist .env
+
+cp src/project/settings/local.py.dist local.py
 
 **Hint**: You may have to add `0.0.0.0` to `ALLOWED_HOSTS` in `local.py`.
 
@@ -34,6 +40,7 @@ After a last verification of the files, to run with docker, just type:
 ```bash
 # First time you download the app, or sometime to refresh the image
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml pull # Call the docker compose pull command
+docker-compose -f docker-compose.yml -f docker-compose-build-dev.yml build # Should be launched once each time you want to start the stack
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml up # Should be launched once each time you want to start the stack
 ```
 
@@ -53,7 +60,7 @@ docker-compose -f docker-compose.yml -f docker-compose-dev.yml up # Should be la
 ## Rebuild/Refresh local docker image in dev
 
 ```sh
-    docker-compose -f docker-compose.yml -f docker-compose-dev.yml build
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-build-dev.yml build
 ```
 
 ## Calling Django manage commands
@@ -95,8 +102,14 @@ If you get the same problem with the django docker env :
 
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml stop django db
-docker volume rm oppm-postgresql # check with docker volume ls
+docker volume rm visu-postgresql # check with docker volume ls
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d db
 # wait fot postgis to be installed
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml up django
 ```
+
+## Troobleshouting
+elasticsearch_1   | [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+  sudo sysctl -w vm.max_map_count=262144
+
+  sudo vim /etc/sysctl.conf -> vm.max_map_count=262144

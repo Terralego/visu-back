@@ -118,16 +118,6 @@ MAX_TILE_ZOOM = 16
 
 TERRA_TILES_HOSTNAMES = []
 
-PYFILES_BACKEND = os.environ.get('PYFILES_BACKEND')
-
-PYFILES_BACKEND_OPTIONS = {
-    "access_key": os.environ.get('PYFILES_ACCESS_KEY'),
-    "secret_key": os.environ.get('PYFILES_SECRET_KEY'),
-    "endpoint_url": os.environ.get('PYFILES_ENDPOINT_URL'),
-    "region_name": os.environ.get('PYFILES_REGION_NAME'),
-    "bucket_name": os.environ.get('PYFILES_BUCKET_NAME'),
-}
-
 # Graphhopper URL
 GRAPHHOPPER = ''
 

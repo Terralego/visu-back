@@ -1,5 +1,5 @@
 version: '3.7'
-x-images:
+x-images: # Only to create template
   env: &env {env_file: [.env, docker.env]}
   django: &django
     <<: [ *env ]
@@ -8,7 +8,12 @@ x-images:
       GUNICORN_WORKER_CLASS: sync
     tty: true
     # latest image is only used in prod (without dev & test tools)
-    image: "${DJANGO_IMAGE}:${DJANGO_IMAGE_VERSION}-dev"
+    build:
+      context: "."
+      args:
+        PY_VER: "${DJANGO_PY_VER:-3.6}"
+    build:
+      context: .
     depends_on:
     - db
     - redis
@@ -119,15 +124,6 @@ services:
     volumes:
       - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - elasticsearch:/usr/share/elasticsearch/data/
-  backup:
-    <<: [ *env ]
-    image: "corpusops/dbsmartbackup:pg10"
-    restart: always
-    volumes:
-      - backupdb-dumps:/srv/backups/
-      - backupdb-logs:/srv/backups/logs/
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-      - ./local/backup/setup/reconfigure.yml:/setup/reconfigure.yml:ro
   setup-postgres:
     <<: [ *env ]
     image: corpusops/pgrouting:10-2.5-2.6
