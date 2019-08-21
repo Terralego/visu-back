@@ -2,26 +2,20 @@
 *.pyc
 __pycache__
 
-# DJANGO local settings
+# Django local settings
 /src/project/settings/local.py
 
 # Docker local settings
-/.env
 /docker.env
 /netrc
 
-# Env
-.envrc
-
 # IDE settings
 .vscode
-.idea
 
 # Virtualenv
 /venv/
-/.venv/
-/.tox
 
 # corpusops & ansible
 *.retry
 /.ansible/scripts/ansible_deploy_env
+/local/

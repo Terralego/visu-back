@@ -1,0 +1,9 @@
+version: '3.7'
+x-images:
+  bypass: &bypass
+    command: 'sh -c "while true;do echo notstarted;sleep 65000;done"'
+    entrypoint: 'sh -c "while true;do echo notstarted;sleep 65000;done"'
+    restart: "no"
+services:
+  db: {<<: [ *bypass ]}
+  backup: {<<: [ *bypass ]}
