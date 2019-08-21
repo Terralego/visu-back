@@ -46,15 +46,15 @@ In order to install the backend server application, you need to fullfil
 the following requirements:
 
 * A linux server with a recent kernel
-* `docker <https://docs.docker.com/install/>`_ >= 18.6 installed
-* `docker-compose <https://docs.docker.com/compose/install/>`_ >= 1.23.0 installed
+* [docker](https://docs.docker.com/install/) >= 18.6 installed
+* [docker-compose](https://docs.docker.com/compose/install/) >= 1.23.0 installed
 * Any load balancer (HaProxy, Traefik, ...) to redirect queries to backend
   (and frontend)
 * An hostname that point to the backend server
 * Optional (recommended): an extra subdomain that also point to the backend
   server to serve tiles from the same server but bypass the browser limit.
   Drastically improve performances
-* Optional: you can use an instance of `sentry <https://sentry.io/welcome/>`_
+* Optional: you can use an instance of [sentry](https://sentry.io/welcome/)
   to track server errors
 
 ## Installing
@@ -65,7 +65,7 @@ Start here if you want a working version of the platform.
 
 There is two parts for the application, the backend and the frontend. Each part
 has his own instructions. To see the frontend part go to 
-[the frontend](https://github.com/terralego/visu-front)repository
+[the frontend](https://github.com/terralego/visu-front) repository
 
 This instructions will install the application for development server.
 For production purpose, please follow the appropriate procedure reading the
@@ -97,18 +97,18 @@ files to your needs.
 
 First the `docker.env` file:
 
-.. code-block:: bash
-
-    $ cp docker.env.dist docker.env
+```sh
+$ cp docker.env.dist docker.env
+```
 
 Use your preferred editor to edit the file created and modify the values.
 Read the comments in the file to get hints about each variable usage.
 
 You can now copy the settings file:
 
-.. code-block:: bash
-
-    $ cp src/project/settings/local.py.dist local.py
+```sh
+$ cp src/project/settings/local.py.dist local.py
+```
 
 Also edit this file to make the values match to what you want. Again, comments
 can help you to find the appropriate values.
@@ -126,40 +126,38 @@ docker-compose -f docker-compose.yml -f docker-compose-build-dev.yml build # Sho
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml up # Should be launched once each time you want to start the stack
 ```
 
-.. note::
-
-    The first startup can be long (5 ~ 10 minutes) as all docker images will be
-    downloaded and/or built.
+**notes:** The first startup can be long (5 ~ 10 minutes) as all docker images will be
+downloaded and/or built.
 
 An error can happens here concerning the database. This is not a real issue but
 you need to stop en restart the application:
 
-.. code-block:: bash
-
-    $ [Ctr-C] # To stop the server
-    $ …
-    $ docker-compose up # Again
+```sh
+$ [Ctr-C] # To stop the server
+$ …
+$ docker-compose up # Again
+```
 
 ### Populate the database
 
 Wait for the startup to finished, then, while keeping it running, go in an
 other shell and populate the database with next commands:
 
-.. code-block:: bash
-
-    $ docker-compose exec django /code/venv/bin/python /code/src/manage.py populatedata # Launch a shell inside django container
+```sh
+$ docker-compose exec django /code/venv/bin/python /code/src/manage.py populatedata # Launch a shell inside django container
+```
 
 To be able to connect you need to configure a password for a user. Execute:
 
-.. code-block:: bash
-
-    $ docker-compose exec django /code/venv/bin/python /code/src/manage.py changepassword autorisation.fontainbleau@onf.fr # Or any user
+```sh
+$ docker-compose exec django /code/venv/bin/python /code/src/manage.py changepassword autorisation.fontainbleau@onf.fr # Or any user
+```
 
 Your instance is now up and running.
 
 To test it you can execute:
 
-```bash
+```sh
 curl http://localhost:<port>/api/settings/
 ```
 
@@ -181,20 +179,21 @@ and the frontend for everything else.
 
 - for user shell
 
-    ```sh
-    docker-compose -f docker-compose.yml -f docker-compose-dev.yml exec django bash
-    ```
+```sh
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml exec django bash
+```
+
 - for root shell
 
-    ```sh
-    docker-compose -f docker-compose.yml -f docker-compose-dev.yml exec django bash
-    ```
+```sh
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml exec django bash
+```
 
 
 ## Rebuild/Refresh local docker image in dev
 
 ```sh
-    docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-build-dev.yml build
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-build-dev.yml build
 ```
 
 ## Calling Django manage commands
