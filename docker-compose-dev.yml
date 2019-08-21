@@ -29,6 +29,9 @@ services:
       - ./requirements-dev.txt:/code/requirements-dev.txt
     ports:
       - "8000:8000"
+    build: {context: ".", args: {BUILD_DEV: "y"}}
+  cron:
+    build: {context: ".", args: {BUILD_DEV: "y"}}
   celery:
     volumes:
       - ./lib:/code/lib

@@ -130,21 +130,12 @@ After a last verification of the files, to run with docker, just type:
 ```sh
 # First time you download the app, or sometime to refresh the image
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml pull # Call the docker compose pull command
-docker-compose -f docker-compose.yml -f docker-compose-build-dev.yml build # Should be launched once each time you want to start the stack
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml build # Should be launched once each time you want to start the stack
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml up # Should be launched once each time you want to start the stack
 ```
 
 **notes:** The first startup can be long (5 ~ 10 minutes) as all docker images will be
 downloaded and/or built.
-
-An error can happens here concerning the database. This is not a real issue but
-you need to stop en restart the application:
-
-```sh
-$ [Ctr-C] # To stop the server
-$ …
-$ docker-compose up # Again
-```
 
 ### Populate the database
 
