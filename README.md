@@ -44,6 +44,9 @@ docker-compose -f docker-compose.yml -f docker-compose-build-dev.yml build # Sho
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml up # Should be launched once each time you want to start the stack
 ```
 
+## Test
+curl http://localhost:<port>/api/settings/
+
 ## Start a shell inside the django container
 
 - for user shell
@@ -56,6 +59,7 @@ docker-compose -f docker-compose.yml -f docker-compose-dev.yml up # Should be la
     ```sh
     docker-compose -f docker-compose.yml -f docker-compose-dev.yml exec django bash
     ```
+
 
 ## Rebuild/Refresh local docker image in dev
 

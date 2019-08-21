@@ -149,8 +149,6 @@ services:
       && dockerize -wait file://$$flag -timeout $${POSTGRES_STARTUP_TIMEOUT} \
       && while true;do printf "HTTP/1.1 200 OK\n\nstarted"| ( nc -l -p 80 || /bin/true);done
 volumes:
-  backupdb-logs:
-  backupdb-dumps:
   postgresql:
   redis:
   mediafiles:

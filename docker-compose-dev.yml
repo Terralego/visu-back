@@ -7,8 +7,7 @@ x-images:
 services:
   nginx:
     ports:
-    - 80:80
-  backup: {<<: [ *bypass ]}
+    - ${VISU_PORT:-80}:80
   django:
     environment:
       - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.dev}
