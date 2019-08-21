@@ -104,6 +104,14 @@ $ cp docker.env.dist docker.env
 Use your preferred editor to edit the file created and modify the values.
 Read the comments in the file to get hints about each variable usage.
 
+Then the `.env` file:
+
+```sh
+$ cp .env.dist .env
+```
+
+Again edit this file.
+
 You can now copy the settings file:
 
 ```sh

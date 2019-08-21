@@ -24,7 +24,7 @@ x-images: # Only to create template
     - '-c'
     - >-
       :
-      && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT}
+      && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s}
       && /bin/bash /code/init/init.sh
     volumes:
       - ./crontab:/etc/cron.d/django
@@ -94,7 +94,7 @@ services:
     - '-c'
     - >-
       :
-      && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT}
+      && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s}
       && /bin/bash /code/init/cron.sh
     depends_on:
       - django
@@ -107,7 +107,7 @@ services:
     - '-c'
     - >-
       :
-      && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT}
+      && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s}
       && /code/venv/bin/celery worker -A django_geosource -l info --autoscale 10,3
     depends_on:
       - django
@@ -146,7 +146,7 @@ services:
           "postgres://$$POSTGRES_USER:$$POSTGRES_PASSWORD@$$POSTGRES_HOST:$$POSTGRES_PORT/$$POSTGRES_DB"\
       );then touch $$flag && break;fi;done )&
       set -x \
-      && dockerize -wait file://$$flag -timeout $${POSTGRES_STARTUP_TIMEOUT} \
+      && dockerize -wait file://$$flag -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s} \
       && while true;do printf "HTTP/1.1 200 OK\n\nstarted"| ( nc -l -p 80 || /bin/true);done
 volumes:
   postgresql:
