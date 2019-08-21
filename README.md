@@ -1,51 +1,181 @@
-# Initialise your development environment
+<p align="center">
+  <a href="" rel="noopener">
+ <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
+</p>
 
-All following commands must be run only once at project installation.
+<h3 align="center">Visu-back</h3>
 
-## First clone
+<div align="center">
 
-```sh
-git clone <>
-```
+  [![Status](https://img.shields.io/badge/status-active-success.svg)]() 
+  [![GitHub Issues](https://img.shields.io/github/issues/terralego/visu-back.svg)](https://github.com/terralego/visu-back/issues)
+  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/terralego/visu-back.svg)](https://github.com/terralego/visu-back//pulls)
+  [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
-## Install docker and docker compose
+</div>
 
-if you are under debian/ubuntu/mint/centos you can do the following:
+---
 
-Follow official procedures for
-  [docker](https://docs.docker.com/install/#releases) and
-  [docker-compose](https://docs.docker.com/compose/install/).
+<p align="center"> Visu-back is the backend of the visu project. Visu is a geospatial data analyse tool.
+    <br> 
+</p>
+
+# 📝 Table of Contents
+
+- [About](#about)
+- [Getting Started](#getting_started)
+- [Deployment](#deployment)
+- [Usage](#usage)
+- [Built Using](#built_using)
+- [TODO](../TODO.md)
+- [Contributing](../CONTRIBUTING.md)
+- [Authors](#authors)
+- [Acknowledgments](#acknowledgement)
+
+# 🧐 About <a name = "about"></a>
+
+Write about 1-2 paragraphs describing the purpose of your project.
+
+# 🏁 Getting Started <a name = "getting_started"></a>
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+
+## Prerequisites
+
+In order to install the backend server application, you need to fullfil
+the following requirements:
+
+* A linux server with a recent kernel
+* `docker <https://docs.docker.com/install/>`_ >= 18.6 installed
+* `docker-compose <https://docs.docker.com/compose/install/>`_ >= 1.23.0 installed
+* Any load balancer (HaProxy, Traefik, ...) to redirect queries to backend
+  (and frontend)
+* An hostname that point to the backend server
+* Optional (recommended): an extra subdomain that also point to the backend
+  server to serve tiles from the same server but bypass the browser limit.
+  Drastically improve performances
+* Optional: you can use an instance of `sentry <https://sentry.io/welcome/>`_
+  to track server errors
+
+## Installing
+
+This section take you by the hand through a series of steps to install a
+working version of the backend part of the visu application. 
+Start here if you want a working version of the platform.
+
+There is two parts for the application, the backend and the frontend. Each part
+has his own instructions. To see the frontend part go to 
+[the frontend](https://github.com/terralego/visu-front)repository
+
+This instructions will install the application for development server.
+For production purpose, please follow the appropriate procedure reading the
+[documentation]().
+
+Visu-back offers an API that is consumed by the frontend.
+
+To install it we need to achieve the following steps:
+
+- Get the latest version
+- Configure the application
+- Bootstrap the instance
+- Populate initial database
 
 
+### Get the last version
 
-## Configuration
+You can clone the source code by executing:
 
-Copy configuration files from their ``.dist`` counterpart
-and adapt them to your needs.
+    git clone https://github.com/terralego/visu-back.git
 
-cp Docker.env.dist Docker.env
+/!\ Further commands must be executed in the root directory of backend
+application.
 
-cp .env.dist .env
+### Configure
 
-cp src/project/settings/local.py.dist local.py
+To configure the application before the first startup, you need to adapt two
+files to your needs.
+
+First the `docker.env` file:
+
+.. code-block:: bash
+
+    $ cp docker.env.dist docker.env
+
+Use your preferred editor to edit the file created and modify the values.
+Read the comments in the file to get hints about each variable usage.
+
+You can now copy the settings file:
+
+.. code-block:: bash
+
+    $ cp src/project/settings/local.py.dist local.py
+
+Also edit this file to make the values match to what you want. Again, comments
+can help you to find the appropriate values.
 
 **Hint**: You may have to add `0.0.0.0` to `ALLOWED_HOSTS` in `local.py`.
 
-# Use your development environment
-
-## Start the stack
+### Bootstrap the instance
 
 After a last verification of the files, to run with docker, just type:
 
-```bash
+```sh
 # First time you download the app, or sometime to refresh the image
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml pull # Call the docker compose pull command
 docker-compose -f docker-compose.yml -f docker-compose-build-dev.yml build # Should be launched once each time you want to start the stack
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml up # Should be launched once each time you want to start the stack
 ```
 
-## Test
+.. note::
+
+    The first startup can be long (5 ~ 10 minutes) as all docker images will be
+    downloaded and/or built.
+
+An error can happens here concerning the database. This is not a real issue but
+you need to stop en restart the application:
+
+.. code-block:: bash
+
+    $ [Ctr-C] # To stop the server
+    $ …
+    $ docker-compose up # Again
+
+### Populate the database
+
+Wait for the startup to finished, then, while keeping it running, go in an
+other shell and populate the database with next commands:
+
+.. code-block:: bash
+
+    $ docker-compose exec django /code/venv/bin/python /code/src/manage.py populatedata # Launch a shell inside django container
+
+To be able to connect you need to configure a password for a user. Execute:
+
+.. code-block:: bash
+
+    $ docker-compose exec django /code/venv/bin/python /code/src/manage.py changepassword autorisation.fontainbleau@onf.fr # Or any user
+
+Your instance is now up and running.
+
+To test it you can execute:
+
+```bash
 curl http://localhost:<port>/api/settings/
+```
+
+You should get a json in respond.
+
+After that you can stop the server by doing a `Ctrl-c` inside the first shell.
+
+You should now configure your load balancer to serve request to the backend
+and proceed the frontend installation.
+
+**Notes:**: if you want to serve backend and frontend from the same domain, you must
+serve backend from following prefixes:
+`api/, admin/, cms/, media/, static_dj/, 502.html, mailcatcher/`
+and the frontend for everything else.
+
+# Useful commands
 
 ## Start a shell inside the django container
 
@@ -78,12 +208,6 @@ docker-compose -f docker-compose.yml -f docker-compose-dev.yml exec django /loca
 # ...
 ```
 
-## Run tests
-
-```sh
-# also consider: linting|coverage
-```
-
 ## Docker volumes
 
 Your application extensively use docker volumes. From times to times you may
@@ -94,7 +218,11 @@ docker volume ls  # hint: |grep \$app
 docker volume rm $id
 ```
 
-## FAQ
+# Troobleshouting
+
+# 🔧 Running the tests <a name = "tests"></a>
+
+## In general
 
 If you get troubles with the nginx docker env restarting all the time, try recreating it :
 
@@ -112,8 +240,48 @@ docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d db
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml up django
 ```
 
-## Troobleshouting
+## Virtual memory
+
+```
 elasticsearch_1   | [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
   sudo sysctl -w vm.max_map_count=262144
+```
 
   sudo vim /etc/sysctl.conf -> vm.max_map_count=262144
+
+
+## Break down into end to end tests
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+## And coding style tests
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+# 🎈 Usage <a name="usage"></a>
+Add notes about how to use the system.
+
+# 🚀 Deployment <a name = "deployment"></a>
+Add additional notes about how to deploy this on a live system.
+
+# ⛏️ Built Using <a name = "built_using"></a>
+- [MongoDB](https://www.mongodb.com/) - Database
+- [Express](https://expressjs.com/) - Server Framework
+- [VueJs](https://vuejs.org/) - Web Framework
+- [NodeJs](https://nodejs.org/en/) - Server Environment
+
+# ✍️ Authors <a name = "authors"></a>
+- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
+
+See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
+
+# 🎉 Acknowledgements <a name = "acknowledgement"></a>
+- Hat tip to anyone whose code was used
+- Inspiration
+- References

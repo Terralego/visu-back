@@ -10,6 +10,9 @@ __pycache__
 /docker.env
 /netrc
 
+# Env
+.envrc
+
 # IDE settings
 .vscode
 .idea
