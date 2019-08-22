@@ -34,11 +34,17 @@
 
 # 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
+Visu-back is the backend part of the TerraVisu application.
 
 # 🏁 Getting Started <a name = "getting_started"></a>
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+This section take you by the hand through a series of steps to install a
+working version of the backend part of the visu application. 
+Start here if you want a working version of the platform.
+
+There is two parts for the application, the backend and the frontend. Each part
+has his own instructions. To see the frontend part go to 
+[the frontend](https://github.com/terralego/visu-front) repository
 
 ## Prerequisites
 
@@ -58,14 +64,6 @@ the following requirements:
   to track server errors
 
 ## Installing
-
-This section take you by the hand through a series of steps to install a
-working version of the backend part of the visu application. 
-Start here if you want a working version of the platform.
-
-There is two parts for the application, the backend and the frontend. Each part
-has his own instructions. To see the frontend part go to 
-[the frontend](https://github.com/terralego/visu-front) repository
 
 This instructions will install the application for development server.
 For production purpose, please follow the appropriate procedure reading the
@@ -104,18 +102,10 @@ $ cp docker.env.dist docker.env
 Use your preferred editor to edit the file created and modify the values.
 Read the comments in the file to get hints about each variable usage.
 
-Then the `.env` file:
-
-```sh
-$ cp .env.dist .env
-```
-
-Again edit this file.
-
 You can now copy the settings file:
 
 ```sh
-$ cp src/project/settings/local.py.dist local.py
+$ cp src/project/settings/local.py.dist src/project/settings/local.py
 ```
 
 Also edit this file to make the values match to what you want. Again, comments
@@ -172,7 +162,36 @@ serve backend from following prefixes:
 `api/, admin/, cms/, media/, static_dj/, 502.html, mailcatcher/`
 and the frontend for everything else.
 
-# Useful commands
+# Troobleshouting
+
+## In general
+
+If you get troubles with the nginx docker env restarting all the time, try recreating it :
+
+```bash
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d --no-deps --force-recreate nginx backup
+```
+
+If you get the same problem with the django docker env :
+
+```bash
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml stop django db
+docker volume rm visu-postgresql # check with docker volume ls
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d db
+# wait fot postgis to be installed
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml up django
+```
+
+## Virtual memory areas error
+
+```
+elasticsearch_1   | [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+  sudo sysctl -w vm.max_map_count=262144
+```
+
+  sudo vim /etc/sysctl.conf -> vm.max_map_count=262144
+
+# 🎈 Usage <a name="usage"></a>
 
 ## Start a shell inside the django container
 
@@ -216,70 +235,12 @@ docker volume ls  # hint: |grep \$app
 docker volume rm $id
 ```
 
-# Troobleshouting
-
-# 🔧 Running the tests <a name = "tests"></a>
-
-## In general
-
-If you get troubles with the nginx docker env restarting all the time, try recreating it :
-
-```bash
-docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d --no-deps --force-recreate nginx backup
-```
-
-If you get the same problem with the django docker env :
-
-```bash
-docker-compose -f docker-compose.yml -f docker-compose-dev.yml stop django db
-docker volume rm visu-postgresql # check with docker volume ls
-docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d db
-# wait fot postgis to be installed
-docker-compose -f docker-compose.yml -f docker-compose-dev.yml up django
-```
-
-## Virtual memory
-
-```
-elasticsearch_1   | [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
-  sudo sysctl -w vm.max_map_count=262144
-```
-
-  sudo vim /etc/sysctl.conf -> vm.max_map_count=262144
-
-
-## Break down into end to end tests
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## And coding style tests
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-# 🎈 Usage <a name="usage"></a>
-Add notes about how to use the system.
-
-# 🚀 Deployment <a name = "deployment"></a>
-Add additional notes about how to deploy this on a live system.
-
 # ⛏️ Built Using <a name = "built_using"></a>
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
+- [ElasticSearch]() - Database
+- [Django]() - Python Framework
+- [DjangoRestFramework]() - Rest Framework
+- [Redis](https://nodejs.org/en/) - Broker
 
 # ✍️ Authors <a name = "authors"></a>
-- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
+- [@terralego](https://github.com/terralego) - Idea & Initial work
 
-See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
-
-# 🎉 Acknowledgements <a name = "acknowledgement"></a>
-- Hat tip to anyone whose code was used
-- Inspiration
-- References

@@ -15,14 +15,11 @@ services:
       - NO_COLLECT_STATIC=1
       - NO_GUNICORN=1
     volumes:
-      - ./local/terra-back-deploy/prod/sudoer:/etc/sudoers.d/$APP_TYPE
-      - ./local/terra-back-deploy/prod/init.sh:/code/init/init.sh
-      - ./local/terra-back-deploy/prod/start.sh:/code/init/start.sh
-      - ./local/terra-back-deploy/prod/cron.sh:/code/init/cron.sh
-      - ./lib:/code/lib
-      - ./local:/code/local
+      - ./prod/sudoer:/etc/sudoers.d/django
+      - ./prod/init.sh:/code/init/init.sh
+      - ./prod/start.sh:/code/init/start.sh
+      - ./prod/cron.sh:/code/init/cron.sh
       - ./src:/code/src
-      - ./private:/code/private
       - ./tox.ini:/code/tox.ini
       - ./.tox:/code/.tox
       - ./requirements.txt:/code/requirements.txt

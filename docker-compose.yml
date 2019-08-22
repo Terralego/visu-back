@@ -28,7 +28,6 @@ x-images: # Only to create template
       && /bin/bash /code/init/init.sh
     volumes:
       - ./crontab:/etc/cron.d/django
-      - ./src/project/settings/instances:/code/src/project/settings/instances
       - mediafiles:/code/public/media
       - statics:/code/public/static
       - logs:/logs/

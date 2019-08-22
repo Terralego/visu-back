@@ -24,4 +24,3 @@ __pycache__
 
 # corpusops & ansible
 *.retry
-/.ansible/scripts/ansible_deploy_env
