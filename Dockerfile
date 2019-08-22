@@ -14,40 +14,39 @@ ADD apt.txt /code/apt.txt
 
 # setup project timezone, dependencies, user & workdir, gosu
 RUN bash -c 'set -ex \
-    && : "set correct timezone" \
-    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
-    && : "install packages" \
-    && apt-get update -qq \
-    && apt-get install -qq -y $(grep -vE "^\s*#" /code/apt.txt  | tr "\n" " ") \
-    && apt-get clean all && apt-get autoclean \
-    && : "project user & workdir" \
-    && useradd -ms /bin/bash django --uid 1000'
+  && : "set correct timezone" \
+  && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
+  && : "install packages" \
+  && apt-get update -qq \
+  && apt-get install -qq -y $(grep -vE "^\s*#" /code/apt.txt  | tr "\n" " ") \
+  && apt-get clean all && apt-get autoclean \
+  && : "project user & workdir" \
+  && useradd -ms /bin/bash django --uid 1000'
 
 ADD crontab /etc/cron.d/django
 CMD chmod 0644 /etc/cron.d/django
 
 ADD prod/start.sh \
-    local/terra-back-deploy/prod/cron.sh \
-    local/terra-back-deploy/prod/init.sh \
-    /code/init/
+  prod/cron.sh \
+  prod/init.sh \
+  /code/init/
 
 ADD requirements*.txt tox.ini README.md /code/
-ADD local/terra-back-deploy/ local/terra-back-deploy/
 ADD src /code/src/
 ADD private /code/private/
 
 RUN bash -c 'set -ex \
-    && chown django:django -R /code \
-    && cd /code \
-    && gosu django:django bash -c "python${PY_VER} -m venv venv \
-    && venv/bin/pip install -U --no-cache-dir setuptools wheel \
-    && venv/bin/pip install -U --no-cache-dir -r ./requirements.txt \
-    && if [[ -n "$BUILD_DEV" ]];then \
-      venv/bin/pip install -U --no-cache-dir \
-      -r ./requirements.txt \
-      -r ./requirements-dev.txt;\
-    fi \
-    && mkdir -p public/static public/media"'
+  && chown django:django -R /code \
+  && cd /code \
+  && gosu django:django bash -c "python${PY_VER} -m venv venv \
+  && venv/bin/pip install -U --no-cache-dir setuptools wheel \
+  && venv/bin/pip install -U --no-cache-dir -r ./requirements.txt \
+  && if [[ -n "$BUILD_DEV" ]];then \
+  venv/bin/pip install -U --no-cache-dir \
+  -r ./requirements.txt \
+  -r ./requirements-dev.txt;\
+  fi \
+  && mkdir -p public/static public/media"'
 
 # image will drop privileges itself using gosu
 WORKDIR /code/src

@@ -139,7 +139,7 @@ $ docker-compose exec django /code/venv/bin/python /code/src/manage.py populated
 To be able to connect you need to configure a password for a user. Execute:
 
 ```sh
-$ docker-compose exec django /code/venv/bin/python /code/src/manage.py changepassword autorisation.fontainbleau@onf.fr # Or any user
+$ docker-compose exec django /code/venv/bin/python /code/src/manage.py changepassword <username>
 ```
 
 Your instance is now up and running.

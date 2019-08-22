@@ -1,6 +1,7 @@
 version: '3.7'
 x-images: # Only to create template
   django: &django
+    env_file: docker.env
     environment:
       GUNICORN_WORKERS: 8
       GUNICORN_WORKER_CLASS: sync
@@ -37,11 +38,13 @@ services:
       - 'redis:/data'
   db:
     image: "corpusops/pgrouting:10-2.5-2.6"
+    env_file: docker.env
     volumes:
       - postgresql:/var/lib/postgresql/data
   nginx:
     restart: always
     image: "corpusops/nginx:1.14-alpine"
+    env_file: docker.env
     depends_on:
       - django
       - elasticsearch
@@ -86,6 +89,7 @@ services:
   elasticsearch:
     hostname: elasticsearch
     image: elasticsearch:6.4.3
+    env_file: docker.env
     environment:
       ES_JAVA_OPTS: -Xms4g -Xmx4g
     healthcheck:
@@ -98,6 +102,7 @@ services:
       - elasticsearch:/usr/share/elasticsearch/data/
   setup-postgres:
     image: corpusops/pgrouting:10-2.5-2.6
+    env_file: docker.env
     depends_on:
     - db
     entrypoint:
