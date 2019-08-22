@@ -1,6 +1,5 @@
 version: '3.7'
 x-images: # Only to create template
-  env: &env {env_file: [.env, docker.env]}
   django: &django
     <<: [ *env ]
     environment:
@@ -33,7 +32,6 @@ x-images: # Only to create template
       - logs:/logs/
 services:
   mailcatcher:
-    <<: [ *env ]
     image: corpusops/mailhog
     hostname: mailcatcher
     volumes: ["mails:/mails"]
@@ -55,18 +53,15 @@ services:
         && echo "$${MAILCATCHER_USER:-mailcatcher}:$$pw" > $$MH_AUTH_FILE
         && su mailhog -p -c MailHog
   redis:
-    <<: [ *env ]
     image: "corpusops/redis:4.0-alpine"
     hostname: redis
     volumes:
       - 'redis:/data'
   db:
-    <<: [ *env ]
     image: "corpusops/pgrouting:10-2.5-2.6"
     volumes:
       - postgresql:/var/lib/postgresql/data
   nginx:
-    <<: [ *env ]
     restart: always
     image: "corpusops/nginx:1.14-alpine"
     depends_on:
@@ -152,7 +147,7 @@ volumes:
   redis:
   mediafiles:
   statics:
-    name: "${DJANGO_NAME}back-statics-${DJANGO_IMAGE_VERSION}"
+    name: "visu-back-statics"
     external: false
   logs:
   elasticsearch:
