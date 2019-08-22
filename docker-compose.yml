@@ -1,7 +1,6 @@
 version: '3.7'
 x-images: # Only to create template
   django: &django
-    <<: [ *env ]
     environment:
       GUNICORN_WORKERS: 8
       GUNICORN_WORKER_CLASS: sync
@@ -31,27 +30,6 @@ x-images: # Only to create template
       - statics:/code/public/static
       - logs:/logs/
 services:
-  mailcatcher:
-    image: corpusops/mailhog
-    hostname: mailcatcher
-    volumes: ["mails:/mails"]
-    environment:
-      MH_STORAGE: maildir
-      MH_MAILDIR_PATH: /mails
-      MH_SMTP_BIND_ADDR: 0.0.0.0:1025
-      MH_API_BIND_ADDR: 0.0.0.0:8025
-      MH_UI_BIND_ADDR: 0.0.0.0:8025
-      MH_UI_WEB_PATH: /mailcatcher
-      MH_AUTH_FILE: /home/mailhog/pw
-    user: root
-    entrypoint:
-      - sh
-      - '-c'
-      - >
-        chown mailhog /mails
-        && pw=$$(MH_AUTH_FILE="" MailHog bcrypt "$${MAILCATCHER_PASSWORD:-mailcatcher}")
-        && echo "$${MAILCATCHER_USER:-mailcatcher}:$$pw" > $$MH_AUTH_FILE
-        && su mailhog -p -c MailHog
   redis:
     image: "corpusops/redis:4.0-alpine"
     hostname: redis
@@ -119,7 +97,6 @@ services:
       - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - elasticsearch:/usr/share/elasticsearch/data/
   setup-postgres:
-    <<: [ *env ]
     image: corpusops/pgrouting:10-2.5-2.6
     depends_on:
     - db
@@ -151,5 +128,4 @@ volumes:
     external: false
   logs:
   elasticsearch:
-  mails:
   cache:
