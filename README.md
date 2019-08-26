@@ -198,30 +198,17 @@ elasticsearch_1   | [1]: max virtual memory areas vm.max_map_count [65530] is to
 - for user shell
 
 ```sh
-docker-compose -f docker-compose.yml -f docker-compose-dev.yml exec django bash
-```
-
-- for root shell
-
-```sh
-docker-compose -f docker-compose.yml -f docker-compose-dev.yml exec django bash
-```
-
-
-## Rebuild/Refresh local docker image in dev
-
-```sh
-docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-build-dev.yml build
+docker-compose exec django bash
 ```
 
 ## Calling Django manage commands
 
 ```sh
-docker-compose -f docker-compose.yml -f docker-compose-dev.yml exec django /local/venv/bin/python /local/code/manage.py shell [options]
+docker-compose  exec django /local/venv/bin/python /local/code/manage.py shell [options]
 # For instance:
-# docker-compose -f docker-compose.yml -f docker-compose-dev.yml exec django /local/venv/bin/python /local/code/manage.py shell migrate
-# docker-compose -f docker-compose.yml -f docker-compose-dev.yml exec django /local/venv/bin/python /local/code/manage.py shell shell
-# docker-compose -f docker-compose.yml -f docker-compose-dev.yml exec django /local/venv/bin/python /local/code/manage.py shell createsuperuser
+# docker-compose exec django /local/venv/bin/python /local/code/manage.py shell migrate
+# docker-compose exec django /local/venv/bin/python /local/code/manage.py shell shell
+# docker-compose exec django /local/venv/bin/python /local/code/manage.py shell createsuperuser
 # ...
 ```
 

@@ -1,4 +1,0 @@
-server.rewriteBasePath: false
-server.basePath: "/kibana"
-elasticsearch.url: "http://elasticsearch:9200"
-server.host: "0.0.0.0"

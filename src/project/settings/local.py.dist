@@ -1,38 +1,33 @@
 import os
 
-# Production
-# ALLOWED_HOSTS = []
-# CORS_ORIGIN_WHITELIST = ()
-# SECRET_KEY = ''
-# DEFAULT_FROM_EMAIL = ''
-# SERVER_EMAIL = ''
-# ADMINS = ()
+# Production variables
+
+ALLOWED_HOSTS = [] # Allowed referer hostname
+CORS_ORIGIN_WHITELIST = () # Cors 
+
+# ADMINS = () # To receive errors
+
 SECRET_KEY = 'super-hot-secret-123456789'
-# vim:set ft=python:
 
+TERRA_TILES_HOSTNAMES = [] # Add here tiles hostnames if any
 
-TILE_HOSTNAME = "<hostname>"
-
-TERRA_TILES_HOSTNAMES = [
-    f'https://{prefix}.{TILE_HOSTNAME}/api/layer/'
-    for prefix in 'abcdefghij'
-]
-
+# Mapbox settings
 TERRA_DEFAULT_MAP_SETTINGS = {
     'accessToken': '<your_mapbox_token>',
     'backgroundStyle': '<your_background_style>', # mapbox://styles/makinacorpus/cjx0630i50y1d1cpk006a92k9
-    'center': [-2.028, 47.852],
-    'zoom': 7.7,
+    'center': [-2.028, 47.852], # Default viewport center
+    'zoom': 7.7, # Default zoom
     'maxZoom': 19.9,
     'minZoom': 7,
-    'fitBounds': {
-        'coordinates': [
+    'fitBounds': {  # Default viewport bounds
+        'coordinates': [ 
             [-4.850, 46.776],
             [-0.551, 48.886]
         ],
     },
 }
 
+# Rigth side menu entries. Also available views for layers.
 TERRA_LAYER_VIEWS = {
     'first': {
         'name': 'First',
@@ -44,12 +39,10 @@ TERRA_LAYER_VIEWS = {
     },
 }
 
+# For admin
 TERRA_APPLIANCE_SETTINGS = {
-    'VIEW_ROOT_PATH': 'first',
-    'DEFAULT_VIEWNAME': 1,
-    'enabled_modules': ['User', 'DataSource', 'DataLayer'],
+    'VIEW_ROOT_PATH': 'first', # Default view
+    'DEFAULT_VIEWNAME': 1, # Default view name
+    'enabled_modules': ['User', 'DataSource', 'DataLayer'], # Enabled terra admin modules
 }
 
-# Mail
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
