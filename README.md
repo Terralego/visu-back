@@ -143,7 +143,7 @@ docker-compose -f docker-compose.yml -f docker-compose-prod.yml pull # Call the 
 docker-compose -f docker-compose.yml -f docker-compose-prod.yml build # Should be launched once each time you want to start the stack
 docker-compose -f docker-compose.yml -f docker-compose-prod.yml up django # Should be launched once each time you want to start the stack
 # Migrations will automatically be run with production settings. Once the initial migrations are done, you can launch all containers
-docker-compose -f docker-compose.yml -f docker-compose-prod.yml up
+docker-compose -f docker-compose.yml -f docker-compose-prod.yml up # Should be launched once each time you want to start the stack
 ```
 
 **notes:** The first startup can be long (5 ~ 10 minutes) as all docker images will be
@@ -155,14 +155,20 @@ Wait for the startup to finish, then, while keeping it running, go in an
 other shell and populate the database with the following commands:
 
 ```sh
-$ docker-compose exec django /code/venv/bin/python /code/src/manage.py populatedata # Launch a shell inside django container
+$ docker-compose exec django /code/venv/bin/python /code/src/manage.py migrate # to migrate the database
+$ çdocker-compose exec django /code/venv/bin/python /code/src/manage.py populatedata # To load initial data
 ```
 
+If you want some demo data, you can also execute:
+
+```sh
+$ docker-compose exec django /code/venv/bin/python /code/src/manage.py populatedata -t # Test data
+```
 
 To be able to connect you need to create a super user. Execute:
 
 ```sh
-$ docker-compose exec django /code/venv/bin/python3 /code/src/manage.py createsuperuser
+$ docker-compose exec django /code/venv/bin/python /code/src/manage.py createsuperuser
 ```
 
 Your instance is now up and running.
@@ -229,9 +235,9 @@ docker-compose exec django bash
 ```sh
 docker-compose  exec django /code/venv/bin/python3 /code/src/manage.py shell [options]
 # For instance:
-# docker-compose exec django /code/venv/bin/python3 /code/src/manage.py shell migrate
-# docker-compose exec django /code/venv/bin/python3 /code/src/manage.py shell shell
-# docker-compose exec django /code/venv/bin/python3 /code/src/manage.py shell createsuperuser
+# docker-compose exec django /code/venv/bin/python3 /code/src/manage.py migrate
+# docker-compose exec django /code/venv/bin/python3 /code/src/manage.py shell
+# docker-compose exec django /code/venv/bin/python3 /code/src/manage.py createsuperuser
 # ...
 ```
 
