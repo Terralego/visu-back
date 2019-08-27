@@ -90,6 +90,19 @@ services:
       && /code/venv/bin/celery beat --scheduler django_geosource.celery.schedulers.GeosourceScheduler -A django_geosource -l info
     depends_on:
       - django
+  celerybeat:
+    <<: [ *django ]
+    environment:
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.dev}
+    command:
+    - sh
+    - '-c'
+    - >-
+      :
+      && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT}
+      && /code/venv/bin/celery beat --scheduler django_geosource.celery.schedulers.GeosourceScheduler -A django_geosource -l info
+    depends_on:
+      - django
   elasticsearch:
     hostname: elasticsearch
     image: elasticsearch:6.4.3

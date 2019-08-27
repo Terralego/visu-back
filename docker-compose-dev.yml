@@ -40,6 +40,12 @@ services:
       - ./local:/code/local
       - ./src:/code/src
       - ./private:/code/private
+  celerybeat:
+    volumes:
+      - ./lib:/code/lib
+      - ./local:/code/local
+      - ./src:/code/src
+      - ./private:/code/private
   elasticsearch:
     hostname: elasticsearch
     image: elasticsearch:6.4.3
