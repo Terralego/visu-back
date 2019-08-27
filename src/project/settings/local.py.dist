@@ -6,9 +6,6 @@ import os
 # CORS_ORIGIN_WHITELIST = () # Cors 
 # ADMINS = () # To receive errors
 
-# For dev only
-
-
 SECRET_KEY = os.env.get('DJANGO_SECRET_KEY', 'super-hot-secret-123456789')
 
 TERRA_TILES_HOSTNAMES = [] # Add at least one tiles hostnames here
@@ -16,7 +13,7 @@ TERRA_TILES_HOSTNAMES = [] # Add at least one tiles hostnames here
 # Mapbox settings
 TERRA_DEFAULT_MAP_SETTINGS = {
     'accessToken': '<your_mapbox_token>',
-    'backgroundStyle': '<your_background_style>', # mapbox://styles/makinacorpus/cjx0630i50y1d1cpk006a92k9
+    'backgroundStyle': '<your_background_style>',
     'center': [-2.028, 47.852], # Default viewport center
     'zoom': 7.7, # Default zoom
     'maxZoom': 19.9,
