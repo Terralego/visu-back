@@ -5,9 +5,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django_geosource.models import Field, PostGISSource, Source
-from terra_layer.models import CustomStyle, FilterField, Layer, LayerGroup
-
-UserModel = get_user_model()
+from terra_layer.models import CustomStyle, FilterField, Layer
 
 
 def load_data():

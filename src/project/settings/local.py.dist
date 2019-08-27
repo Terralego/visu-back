@@ -2,14 +2,16 @@ import os
 
 # Production variables
 
-ALLOWED_HOSTS = [] # Allowed referer hostname
-CORS_ORIGIN_WHITELIST = () # Cors 
-
+# ALLOWED_HOSTS = [] # Allowed referer hostname
+# CORS_ORIGIN_WHITELIST = () # Cors 
 # ADMINS = () # To receive errors
 
-SECRET_KEY = 'super-hot-secret-123456789'
+# For dev only
 
-TERRA_TILES_HOSTNAMES = [] # Add here tiles hostnames if any
+
+SECRET_KEY = os.env.get('DJANGO_SECRET_KEY', 'super-hot-secret-123456789')
+
+TERRA_TILES_HOSTNAMES = [] # Add at least one tiles hostnames here
 
 # Mapbox settings
 TERRA_DEFAULT_MAP_SETTINGS = {
