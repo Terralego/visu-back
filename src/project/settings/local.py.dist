@@ -31,17 +31,22 @@ TERRA_LAYER_VIEWS = {
     'first': {
         'name': 'First',
         'pk': 1,
+        'icon-name: "population",
+        'icon': 'icon',
     },
     'second': {
         'name': 'Second',
         'pk': 2,
+        'icon-name: "economie",
+        'icon': 'icon',
     },
 }
 
 # For admin
 TERRA_APPLIANCE_SETTINGS = {
     'VIEW_ROOT_PATH': 'first', # Default view
-    'DEFAULT_VIEWNAME': 1, # Default view name
+    'DEFAULT_VIEWNAME': 1, # Default view name,
+    'TERRA_LAYER_VIEWS': TERRA_LAYER_VIEWS,
     'enabled_modules': ['User', 'DataSource', 'DataLayer'], # Enabled terra admin modules
 }
 
