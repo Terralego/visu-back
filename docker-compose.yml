@@ -6,6 +6,7 @@ x-images: # Only to create template
       GUNICORN_WORKERS: 8
       GUNICORN_WORKER_CLASS: sync
     tty: true
+    image: "${DJANGO_IMAGE}:${DJANGO_IMAGE_VERSION}-dev"
     # latest image is only used in prod (without dev & test tools)
     build:
       context: "."
@@ -26,7 +27,6 @@ x-images: # Only to create template
       && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s}
       && /bin/bash /code/init/init.sh
     volumes:
-      - ./crontab:/etc/cron.d/django
       - mediafiles:/code/public/media
       - statics:/code/public/static
       - logs:/logs/
@@ -62,21 +62,10 @@ services:
     - SUPERVISORD_CONFIGS=/etc/supervisor.d/cron /etc/supervisor.d/nginx /etc/supervisor.d/rsyslog
   django:
     <<: [ *django ]
-  cron:
-    <<: [ *django ]
-    command:
-    - sh
-    - '-c'
-    - >-
-      :
-      && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s}
-      && /bin/bash /code/init/cron.sh
-    depends_on:
-      - django
   celery:
     <<: [ *django ]
     environment:
-      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.dev}
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.prod}
     command:
     - sh
     - '-c'
@@ -84,6 +73,19 @@ services:
       :
       && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s}
       && /code/venv/bin/celery worker -A django_geosource -l info --autoscale 10,3
+    depends_on:
+      - django
+  celerybeat:
+    <<: [ *django ]
+    environment:
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.prod}
+    command:
+    - sh
+    - '-c'
+    - >-
+      :
+      && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s}
+      && /code/venv/bin/celery beat --scheduler django_geosource.celery.schedulers.GeosourceScheduler -A django_geosource -l info
     depends_on:
       - django
   elasticsearch:

@@ -7,7 +7,7 @@
 
 <div align="center">
 
-  [![Status](https://img.shields.io/badge/status-active-success.svg)]() 
+  [![Status](https://img.shields.io/badge/status-active-success.svg)]()
   [![GitHub Issues](https://img.shields.io/github/issues/terralego/visu-back.svg)](https://github.com/terralego/visu-back/issues)
   [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/terralego/visu-back.svg)](https://github.com/terralego/visu-back//pulls)
   [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
@@ -17,7 +17,7 @@
 ---
 
 <p align="center"> Visu-back is the backend of the visu project. Visu is a geospatial data analyse tool.
-    <br> 
+    <br>
 </p>
 
 # 📝 Table of Contents
@@ -39,11 +39,11 @@ Visu-back is the backend part of the TerraVisu application.
 # 🏁 Getting Started <a name = "getting_started"></a>
 
 This section take you by the hand through a series of steps to install a
-working version of the backend part of the visu application. 
+working version of the backend part of the visu application.
 Start here if you want a working version of the platform.
 
 There is two parts for the application, the backend and the frontend. Each part
-has his own instructions. To see the frontend part go to 
+has his own instructions. To see the frontend part go to
 [the frontend](https://github.com/terralego/visu-front) repository
 
 ## Prerequisites
@@ -112,16 +112,34 @@ Also edit this file to make the values match to what you want. Again, comments
 can help you to find the appropriate values.
 
 **Hint**: You may have to add `0.0.0.0` to `ALLOWED_HOSTS` in `local.py`.
+Also, you need to set `TERRA_TILES_HOSTNAMES` setting to API url. In development case it should be set
+to `http://localhost:8000`  if you exposed gunicorn ports, or `http://localhost/` if you exposed API through nginx.
+Setting your mapbox token and background style is also recommended.
+
 
 ### Bootstrap the instance
 
 After a last verification of the files, to run with docker, just type:
 
+#### For development purpose
+
 ```sh
 # First time you download the app, or sometime to refresh the image
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml pull # Call the docker compose pull command
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml build # Should be launched once each time you want to start the stack
-docker-compose -f docker-compose.yml -f docker-compose-dev.yml up # Should be launched once each time you want to start the stack
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml up django # Should be launched once each time you want to start the stack
+# Take care that no migration are runned, so you can't launch celery/celerybeat container until migration aren't applied.
+```
+
+#### For production purpose
+
+```sh
+# First time you download the app, or sometime to refresh the image
+docker-compose -f docker-compose.yml -f docker-compose-prod.yml pull # Call the docker compose pull command
+docker-compose -f docker-compose.yml -f docker-compose-prod.yml build # Should be launched once each time you want to start the stack
+docker-compose -f docker-compose.yml -f docker-compose-prod.yml up django # Should be launched once each time you want to start the stack
+# Migration will automatically be runned with production settings, one time initial migrations are runned. You can launch all containers
+docker-compose -f docker-compose.yml -f docker-compose-prod.yml up
 ```
 
 **notes:** The first startup can be long (5 ~ 10 minutes) as all docker images will be
@@ -136,10 +154,11 @@ other shell and populate the database with next commands:
 $ docker-compose exec django /code/venv/bin/python /code/src/manage.py populatedata # Launch a shell inside django container
 ```
 
-To be able to connect you need to configure a password for a user. Execute:
+
+To be able to connect you need to create a super user. Execute:
 
 ```sh
-$ docker-compose exec django /code/venv/bin/python /code/src/manage.py changepassword <username>
+$ docker-compose exec django /code/venv/bin/python3 /code/src/manage.py createsuperuser
 ```
 
 Your instance is now up and running.
@@ -204,11 +223,11 @@ docker-compose exec django bash
 ## Calling Django manage commands
 
 ```sh
-docker-compose  exec django /local/venv/bin/python /local/code/manage.py shell [options]
+docker-compose  exec django /code/venv/bin/python3 /code/src/manage.py shell [options]
 # For instance:
-# docker-compose exec django /local/venv/bin/python /local/code/manage.py shell migrate
-# docker-compose exec django /local/venv/bin/python /local/code/manage.py shell shell
-# docker-compose exec django /local/venv/bin/python /local/code/manage.py shell createsuperuser
+# docker-compose exec django /code/venv/bin/python3 /code/src/manage.py shell migrate
+# docker-compose exec django /code/venv/bin/python3 /code/src/manage.py shell shell
+# docker-compose exec django /code/venv/bin/python3 /code/src/manage.py shell createsuperuser
 # ...
 ```
 

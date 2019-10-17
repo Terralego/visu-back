@@ -19,7 +19,7 @@ services:
       - ./prod/init.sh:/code/init/init.sh
       - ./prod/start.sh:/code/init/start.sh
       - ./prod/cron.sh:/code/init/cron.sh
-      - ./src:/code/srcg
+      - ./src:/code/src
       - ./tox.ini:/code/tox.ini
       - ./.tox:/code/.tox
       - ./requirements.txt:/code/requirements.txt
@@ -27,9 +27,17 @@ services:
     ports:
       - "8000:8000"
     build: {context: ".", args: {BUILD_DEV: "y"}}
-  cron:
-    build: {context: ".", args: {BUILD_DEV: "y"}}
   celery:
+    environment:
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.dev}
+    volumes:
+      - ./lib:/code/lib
+      - ./local:/code/local
+      - ./src:/code/src
+      - ./private:/code/private
+  celerybeat:
+    environment:
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.dev}
     volumes:
       - ./lib:/code/lib
       - ./local:/code/local

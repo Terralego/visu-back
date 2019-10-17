@@ -1,7 +1,0 @@
-version: '3.7'
-x-images:
-  django: &django
-    build: {context: ".", args: {BUILD_DEV: "y"}}
-services:
-  cron: {<<: [ *django ]}
-  django: {<<: [ *django ]}

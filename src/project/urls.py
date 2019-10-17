@@ -16,9 +16,9 @@ Including another URLconf
 from django.urls import include, path
 
 urlpatterns = [
-    path('api/', include('terracommon.terra.urls')),
-    path('api/', include('terracommon.accounts.urls')),
-    path('api/', include('terracommon.datastore.urls')),
+    path('api/', include('geostore.urls')),
+    path('api/', include('terra_utils.urls')),
+    path('api/', include('terra_accounts.urls')),
     path('api/geosource/', include('django_geosource.urls')),
     path('api/geolayer/', include('terra_layer.urls')),
 ]

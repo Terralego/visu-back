@@ -1,18 +1,18 @@
 version: '3.7'
 x-django: &django
   volumes:
-  - ./local.py:/code/src/project/settings/local.py
+  - ./src/project/settings/local.py:/code/src/project/settings/local.py
   image: "${DJANGO_IMAGE}:${DJANGO_IMAGE_VERSION}"
 services:
   nginx:
     ports:
     - 80:80
-  cron:
-    <<: [ *django ]
   django:
     <<: [ *django ]
-    ports:
-    - "8000:8000"
+  celery:
+    <<: [ *django ]
+  celerybeat:
+    <<: [ *django ]
   db:
     volumes:
       - ./prod/pg-tune.sh:/docker-entrypoint-initdb.d/z_pg-tune.sh
