@@ -66,8 +66,8 @@ the following requirements:
 ## Installing
 
 This instructions will install the application for development server.
-For production purpose, please follow the appropriate procedure reading the
-[documentation]().
+For production purpose, you should understand what you are doing, and use
+`docker-compose-prod.yml` file.
 
 Visu-back offers an API that is consumed by the frontend.
 
