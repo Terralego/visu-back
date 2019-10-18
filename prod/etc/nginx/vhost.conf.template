@@ -11,7 +11,7 @@ proxy_buffer_size 256k;
 proxy_buffers 4 256k;
 proxy_busy_buffers_size 256k;
 
-proxy_cache_path /cache levels=1:2 keys_zone=terralego:200m inactive=1d use_temp_path=off;
+proxy_cache_path /cache levels=1:2 keys_zone=terralego:200m inactive=30d use_temp_path=off;
 
 # logging setup
 log_format custom_combined '"$remote_addr - $remote_user [$time_local] "$request" $status $bytes_sent "$http_referer" "$http_user_agent" "$gzip_ratio"';
@@ -42,6 +42,16 @@ map $http_x_ssl_resolved  $forwarded_server_port              {default $server_p
 map $http_x_ssl_resolved  $http_x_forwarded_protocol_resolved {default tcp;1 ssl;}
 map $http_x_ssl_resolved  $http_x_forwarded_ssl_resolved      {default off;1 on;}
 map $http_x_ssl_resolved  $http_x_forwarded_proto_resolved    {default http;1 https;}
+
+# Obtain best http host
+map $http_host $this_host {
+    default          $http_host;
+    ''               $host;
+}
+map $http_x_forwarded_host $best_http_host {
+    default          $http_x_forwarded_host;
+    ''               $this_host;
+}
 
 upstream elasticserver {
     server elasticsearch:9200;
@@ -116,8 +126,8 @@ server {
         root  /public/502.html;
     }
 
-    location /static_dj/ {
-        alias /public/static/;
+    location ~ ^/(?:static_dj/|static-back/)(?<staticspath>.*)$ {
+        alias /public/static/$staticspath;
 
         # static optimisations
         tcp_nodelay off;
@@ -132,7 +142,7 @@ server {
         add_header Cache-Control "public";
     }
 
-    location ~ ^/api/layer/(.+)/(tiles|tilejson)(/\d+/\d+/\d+/)? {
+    location ~ ^/api/(layer|group)/(.+)/(tiles|tilejson)(/\d+/\d+/\d+/)? {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
         proxy_pass http://django:8000;
@@ -143,7 +153,7 @@ server {
 
         proxy_cache_background_update on;
         proxy_cache_lock on;
-        proxy_cache_valid any 5m;
+        proxy_cache_valid any 1m;
 
         proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie;
 
@@ -154,7 +164,7 @@ server {
         add_header Pragma "no-cache";
         add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
 
-        proxy_cache_key $scheme$proxy_host$request_uri$http_origin;
+        proxy_cache_key $scheme$proxy_host$request_uri$http_origin$arg_idb64$arg_token;
         add_header X-Proxy-Cache $upstream_cache_status;
     }
 
@@ -185,7 +195,6 @@ server {
         add_header Cache-Control "private, max-age=0, no-cache, no-store";
 
         satisfy all;
-        allow 91.206.199.73; # Client IP for logstash
         allow 10.0.0.0/8;
         allow 172.16.0.0/12;
         allow 192.168.0.0/16;

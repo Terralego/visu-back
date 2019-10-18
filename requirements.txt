@@ -1,13 +1,15 @@
-Django>=2.1,<2.2
+Django==2.2.5
 django-redis>=4.10,<4.11
 
-git+https://github.com/Terralego/terra-back.git@master
+django-terra-accounts>=0.3,<0.4
+django-geostore>0.3.4
+terra-common>0.3
 git+https://github.com/Terralego/django-geosource.git@master
 git+https://github.com/Terralego/terra-layer.git@master
+terra-bonobo-nodes>=0.3
+django-terra-utils>=0.3.6,<0.4
 
 raven==6.10.0
-
-django-url-filter>=0.3,<0.4
 
 # ETL
 requests>=2.19,<2.20

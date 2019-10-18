@@ -23,9 +23,6 @@ RUN bash -c 'set -ex \
   && : "project user & workdir" \
   && useradd -ms /bin/bash django --uid 1000'
 
-ADD crontab /etc/cron.d/django
-CMD chmod 0644 /etc/cron.d/django
-
 ADD prod/start.sh \
   prod/cron.sh \
   prod/init.sh \
