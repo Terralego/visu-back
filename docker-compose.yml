@@ -48,6 +48,8 @@ services:
     depends_on:
       - django
       - elasticsearch
+    ports:
+    - ${VISU_PORT:-80}:80
     volumes:
       - ./prod/etc/nginx/vhost.conf.template:/etc/nginx/conf.d/default.conf.template
       - mediafiles:/public/media/:ro

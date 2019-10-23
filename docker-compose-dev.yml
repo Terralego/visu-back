@@ -5,9 +5,6 @@ x-images:
     entrypoint: 'sh -c "while true;do echo notstarted;sleep 65000;done"'
     restart: "no"
 services:
-  nginx:
-    ports:
-    - ${VISU_PORT:-80}:80
   django:
     environment:
       - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.dev}
