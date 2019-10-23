@@ -116,6 +116,10 @@ Also, you need to set `TERRA_TILES_HOSTNAMES` setting to API url. In development
 to `http://localhost:8000`  if you expose gunicorn ports, or `http://localhost/` if you expose API through nginx.
 Setting your mapbox token and background style is also recommended.
 
+Finally, copy `.env.dist` file to `.env`. The file is used when deploying a production environment to set the django built image's name and tag:
+```sh
+$ cp .env.dist .env
+```
 
 ### Bootstrap the instance
 
