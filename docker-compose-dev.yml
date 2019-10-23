@@ -43,6 +43,4 @@ services:
   elasticsearch:
     hostname: elasticsearch
     image: elasticsearch:6.4.3
-    environment:
-      ES_JAVA_OPTS: -Xms1g -Xmx1g
 
