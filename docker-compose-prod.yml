@@ -4,9 +4,6 @@ x-django: &django
   - ./src/project/settings/local.py:/code/src/project/settings/local.py
   image: "${DJANGO_IMAGE}:${DJANGO_IMAGE_VERSION}"
 services:
-  nginx:
-    ports:
-    - 80:80
   django:
     <<: [ *django ]
   celery:
