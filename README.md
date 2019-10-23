@@ -48,7 +48,7 @@ has his own instructions. To see the frontend part go to
 
 ## Prerequisites
 
-In order to install the backend server application, you need to fullfil
+In order to install the backend server application, you need to fulfil
 the following requirements:
 
 * A linux server with a recent kernel
@@ -56,16 +56,16 @@ the following requirements:
 * [docker-compose](https://docs.docker.com/compose/install/) >= 1.23.0 installed
 * Any load balancer (HaProxy, Traefik, ...) to redirect queries to backend
   (and frontend)
-* An hostname that point to the backend server
-* Optional (recommended): an extra subdomain that also point to the backend
+* A hostname pointing to the backend server
+* Optional (recommended): a set of extra subdomains also pointing to the backend
   server to serve tiles from the same server but bypass the browser limit.
   Drastically improve performances
 * Optional: you can use an instance of [sentry](https://sentry.io/welcome/)
   to track server errors
 
-## Installing
+## Installation
 
-This instructions will install the application for development server.
+These instructions will guide you to install the application on a development server.
 For production purpose, you should understand what you are doing, and use
 `docker-compose-prod.yml` file.
 
@@ -79,13 +79,13 @@ To install it we need to achieve the following steps:
 - Populate initial database
 
 
-### Get the last version
+### Get the latest version
 
 You can clone the source code by executing:
 
     git clone https://github.com/terralego/visu-back.git
 
-/!\ Further commands must be executed in the root directory of backend
+/!\ The following commands must be executed in the root directory of the backend
 application.
 
 ### Configure
@@ -99,8 +99,8 @@ First the `docker.env` file:
 $ cp docker.env.dist docker.env
 ```
 
-Use your preferred editor to edit the file created and modify the values.
-Read the comments in the file to get hints about each variable usage.
+Use your preferred editor to edit the created file and modify the values.
+Read the comments in the file to get hints on the purpose of each variable.
 
 You can now copy the settings file:
 
@@ -108,14 +108,18 @@ You can now copy the settings file:
 $ cp src/project/settings/local.py.dist src/project/settings/local.py
 ```
 
-Also edit this file to make the values match to what you want. Again, comments
+Also edit this file to make the values meet your needs. Again, comments
 can help you to find the appropriate values.
 
 **Hint**: You may have to add `0.0.0.0` to `ALLOWED_HOSTS` in `local.py`.
-Also, you need to set `TERRA_TILES_HOSTNAMES` setting to API url. In development case it should be set
-to `http://localhost:8000`  if you exposed gunicorn ports, or `http://localhost/` if you exposed API through nginx.
+Also, you need to set `TERRA_TILES_HOSTNAMES` setting to API url. In development environment it should be set
+to `http://localhost:8000`  if you expose gunicorn ports, or `http://localhost/` if you expose API through nginx.
 Setting your mapbox token and background style is also recommended.
 
+Finally, copy `.env.dist` file to `.env`. The file is used when deploying a production environment to set the django built image's name and tag:
+```sh
+$ cp .env.dist .env
+```
 
 ### Bootstrap the instance
 
@@ -128,7 +132,7 @@ After a last verification of the files, to run with docker, just type:
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml pull # Call the docker compose pull command
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml build # Should be launched once each time you want to start the stack
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml up django # Should be launched once each time you want to start the stack
-# Take care that no migration are runned, so you can't launch celery/celerybeat container until migration aren't applied.
+# Take care that no migrations are run, so you can't launch celery/celerybeat container until migration are applied.
 ```
 
 #### For production purpose
@@ -138,7 +142,7 @@ docker-compose -f docker-compose.yml -f docker-compose-dev.yml up django # Shoul
 docker-compose -f docker-compose.yml -f docker-compose-prod.yml pull # Call the docker compose pull command
 docker-compose -f docker-compose.yml -f docker-compose-prod.yml build # Should be launched once each time you want to start the stack
 docker-compose -f docker-compose.yml -f docker-compose-prod.yml up django # Should be launched once each time you want to start the stack
-# Migration will automatically be runned with production settings, one time initial migrations are runned. You can launch all containers
+# Migrations will automatically be run with production settings. Once the initial migrations are done, you can launch all containers
 docker-compose -f docker-compose.yml -f docker-compose-prod.yml up
 ```
 
@@ -147,8 +151,8 @@ downloaded and/or built.
 
 ### Populate the database
 
-Wait for the startup to finished, then, while keeping it running, go in an
-other shell and populate the database with next commands:
+Wait for the startup to finish, then, while keeping it running, go in an
+other shell and populate the database with the following commands:
 
 ```sh
 $ docker-compose exec django /code/venv/bin/python /code/src/manage.py populatedata # Launch a shell inside django container
@@ -169,29 +173,29 @@ To test it you can execute:
 curl http://localhost:<port>/api/settings/
 ```
 
-You should get a json in respond.
+You should get a json in response.
 
 After that you can stop the server by doing a `Ctrl-c` inside the first shell.
 
-You should now configure your load balancer to serve request to the backend
-and proceed the frontend installation.
+You should now configure your load balancer to serve requests to the backend
+and proceed to the frontend installation.
 
 **Notes:**: if you want to serve backend and frontend from the same domain, you must
-serve backend from following prefixes:
+serve backend from the following prefixes:
 `api/, admin/, cms/, media/, static_dj/, 502.html, mailcatcher/`
 and the frontend for everything else.
 
-# Troobleshouting
+# Troubleshooting
 
 ## In general
 
-If you get troubles with the nginx docker env restarting all the time, try recreating it :
+If you get troubles with the nginx docker env restarting all the time, try recreating it:
 
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d --no-deps --force-recreate nginx backup
 ```
 
-If you get the same problem with the django docker env :
+If you get the same problem with the django docker env:
 
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml stop django db
@@ -233,8 +237,8 @@ docker-compose  exec django /code/venv/bin/python3 /code/src/manage.py shell [op
 
 ## Docker volumes
 
-Your application extensively use docker volumes. From times to times you may
-need to erase them (eg: burn the db to start from fresh)
+Your application extensively uses docker volumes. From times to times you may
+need to erase them (eg: burn the db to start from scratch)
 
 ```sh
 docker volume ls  # hint: |grep \$app
