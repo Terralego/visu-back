@@ -4,7 +4,7 @@ x-django: &django
   - ./src/project/settings/local.py:/code/src/project/settings/local.py
   image: "${DJANGO_IMAGE}:${DJANGO_IMAGE_VERSION}"
 services:
-  elastic:
+  elasticsearch:
     environment:
       ES_JAVA_OPTS: ${ES_JAVA_OPTS:--Xms4g -Xmx4g}
   django:
