@@ -17,4 +17,12 @@ services:
     volumes:
       - ./prod/pg-tune.sh:/docker-entrypoint-initdb.d/z_pg-tune.sh
       - postgresql:/var/lib/postgresql/data
-
+  backup:
+    image: "corpusops/dbsmartbackup:pgrouting-10-2.5-2.6"
+    restart: always
+    volumes:
+    - backupdb-dumps:/var/db_smart_backup/
+    - backupdb-logs:/var/db_smart_backup/logs/
+volumes:
+  backupdb-logs:
+  backupdb-dumps:
