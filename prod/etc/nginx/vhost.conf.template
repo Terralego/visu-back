@@ -142,10 +142,10 @@ server {
         add_header Cache-Control "public";
     }
 
-    location ~ ^/api/(layer|group)/(.+)/(tiles|tilejson)(/\d+/\d+/\d+/)? {
+    location ~ ^/api/geostore/(layer|group)/(.+)/(tiles|tilejson)(/\d+/\d+/\d+/)? {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
-        proxy_pass http://django:8000;
+        proxy_pass http://djangotiles;
         proxy_redirect off;
         proxy_buffering on;
 
@@ -166,22 +166,42 @@ server {
 
         proxy_cache_key $scheme$proxy_host$request_uri$http_origin$arg_idb64$arg_token;
         add_header X-Proxy-Cache $upstream_cache_status;
+        add_header X-Cache-Source "djangotiles";
     }
 
-    location ~ ^/(api/|admin/) {
+    location ~ ^/api/ {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
         proxy_redirect off;
         proxy_pass http://django:8000;
+        proxy_buffering on;
+        proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie;
+        proxy_connect_timeout 5s;
 
         # Never cache the API content to prevent proxy caching
         add_header Pragma "no-cache";
         add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+        add_header X-Proxy-Cache $upstream_cache_status;
+        add_header X-Cache-Source "django";
+
+        proxy_cache terralego;
+        proxy_cache_background_update on;
+        proxy_cache_lock on;
+        proxy_cache_valid any 2s;
+
+        proxy_cache_key $scheme$proxy_host$request_uri$http_origin$arg_idb64$arg_token;
+        proxy_cache_use_stale error timeout invalid_header updating
+                http_500 http_502 http_503 http_504;
+
     }
 
     location ~ ^/media/ {
-        internal;
         root /public/;
+    }
+
+    location ~ ^/media/private/ {
+        internal;
+        root /public/private/;
     }
 
     location ^~ /elasticsearch/ {
@@ -201,15 +221,15 @@ server {
         allow 127.0.0.1;
         deny  all;
 
-        location ^~ /elasticsearch/_msearch {
-            proxy_pass http://elasticserver/_msearch;
+        location ~ ^/elasticsearch/(([^\/]+/)?(_msearch|_search)/?) {
             allow all;
+
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header Host $http_host;
             proxy_redirect off;
+            proxy_pass http://elasticserver/$1;
+
             add_header Pragma "no-cache";
             add_header Cache-Control "private, max-age=0, no-cache, no-store";
         }
     }
-
-}

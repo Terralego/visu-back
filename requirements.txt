@@ -1,11 +1,10 @@
-Django==2.2.5
+Django>=2.2.7
 django-redis>=4.10,<4.11
 
 django-terra-accounts>=0.3,<0.4
 django-geostore>0.3.4
-terra-common>0.3
-git+https://github.com/Terralego/django-geosource.git@master
-git+https://github.com/Terralego/terra-layer.git@master
+django-geosource>=0.3.0
+terra-layer>=0.3.1
 terra-bonobo-nodes>=0.3
 django-terra-utils>=0.3.6,<0.4
 
