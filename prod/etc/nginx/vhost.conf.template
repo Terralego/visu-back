@@ -189,7 +189,7 @@ server {
         proxy_cache_lock on;
         proxy_cache_valid any 2s;
 
-        proxy_cache_key $scheme$proxy_host$request_uri$http_origin$arg_idb64$arg_token;
+        proxy_cache_key $scheme$proxy_host$request_uri$http_origin$arg_idb64$arg_token$http_authorization;
         proxy_cache_use_stale error timeout invalid_header updating
                 http_500 http_502 http_503 http_504;
 
