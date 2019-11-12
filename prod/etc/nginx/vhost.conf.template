@@ -221,7 +221,7 @@ server {
         allow 127.0.0.1;
         deny  all;
 
-        location ~ ^/elasticsearch/(([^\/]+/)?(_msearch|_search)/?) {
+        location ~ ^/elasticsearch/(([^\/]+/)?(_msearch|_search)(/.*)?) {
             allow all;
 
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
