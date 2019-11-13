@@ -8,6 +8,8 @@ terra-layer>=0.3.1
 terra-bonobo-nodes>=0.3
 django-terra-utils>=0.3.6,<0.4
 
+django-cors-headers<=3.2
+
 raven==6.10.0
 
 # ETL
