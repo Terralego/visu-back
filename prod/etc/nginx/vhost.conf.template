@@ -233,3 +233,4 @@ server {
             add_header Cache-Control "private, max-age=0, no-cache, no-store";
         }
     }
+}
