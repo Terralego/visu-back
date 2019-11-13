@@ -29,7 +29,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework_gis',
     'corsheaders',
-    'storages',
 
     'terra_accounts',
     'terracommon.events',
@@ -53,7 +52,6 @@ RELATIVE_SETTINGS_MODULE = os.environ.get('RELATIVE_SETTINGS_MODULE')
 
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': timedelta(hours=1),
-    'JWT_AUTH_COOKIE': 'jwt',
 }
 
 TOKEN_TIMEOUT = 3600
