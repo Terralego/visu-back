@@ -31,8 +31,6 @@ INSTALLED_APPS = (
     'corsheaders',
 
     'terra_accounts',
-    'terracommon.events',
-    'terracommon.datastore',
     'geostore',
     'django_geosource',
     'terra_layer',

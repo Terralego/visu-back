@@ -2,10 +2,13 @@ import os
 from copy import deepcopy
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django_geosource.models import Field, PostGISSource, Source
 from terra_layer.models import CustomStyle, FilterField, Layer, LayerGroup
-from terracommon.accounts.models import TerraUser
+
+
+UserModel = get_user_model()
 
 
 def load_data():
@@ -31,9 +34,9 @@ def create_test_users():
 
         fields = {k: v for k, v in user_data.items() if not k.startswith("_")}
         if is_superuser:
-            user = TerraUser.objects.create_superuser(**fields)
+            user = UserModel.objects.create_superuser(**fields)
         else:
-            user = TerraUser.objects.create_user(**fields)
+            user = UserModel.objects.create_user(**fields)
 
         user_groups = user_data.get("_groups")
         if user_groups:
