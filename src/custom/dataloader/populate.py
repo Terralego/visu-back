@@ -7,7 +7,6 @@ from django.contrib.auth.models import Group
 from django_geosource.models import Field, PostGISSource, Source
 from terra_layer.models import CustomStyle, FilterField, Layer, LayerGroup
 
-
 UserModel = get_user_model()
 
 
@@ -21,6 +20,7 @@ def load_test_data():
 
 
 def create_test_users():
+    print("Populate test users...")
     users_data = [
         {"email": "visu@terralego.fake", "_groups": [], "_is_superuser": True}
     ]
