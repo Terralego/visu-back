@@ -31,6 +31,7 @@ ADD prod/start.sh \
 ADD requirements*.txt tox.ini README.md /code/
 ADD src /code/src/
 ADD private /code/private/
+ADD lib /code/lib
 
 RUN bash -c 'set -ex \
   && chown django:django -R /code \
