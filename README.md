@@ -131,6 +131,7 @@ After a last verification of the files, to run with docker, just type:
 # First time you download the app, or sometime to refresh the image
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml pull # Call the docker compose pull command
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml build # Should be launched once each time you want to start the stack
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml run --rm django ./manage.py migrate # Do the migrations
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml up django # Should be launched once each time you want to start the stack
 # Take care that no migrations are run, so you can't launch celery/celerybeat container until migration are applied.
 ```
@@ -155,14 +156,14 @@ Wait for the startup to finish, then, while keeping it running, go in an
 other shell and populate the database with the following commands:
 
 ```sh
-$ docker-compose exec django /code/venv/bin/python /code/src/manage.py populatedata # Launch a shell inside django container
+$ docker-compose exec django ./manage.py populatedata # Launch a shell inside django container
 ```
 
 
 To be able to connect you need to create a super user. Execute:
 
 ```sh
-$ docker-compose exec django /code/venv/bin/python3 /code/src/manage.py createsuperuser
+$ docker-compose exec django ./manage.py createsuperuser
 ```
 
 Your instance is now up and running.
@@ -227,11 +228,11 @@ docker-compose exec django bash
 ## Calling Django manage commands
 
 ```sh
-docker-compose  exec django /code/venv/bin/python3 /code/src/manage.py shell [options]
+docker-compose  exec django ./manage.py shell [options]
 # For instance:
-# docker-compose exec django /code/venv/bin/python3 /code/src/manage.py shell migrate
-# docker-compose exec django /code/venv/bin/python3 /code/src/manage.py shell shell
-# docker-compose exec django /code/venv/bin/python3 /code/src/manage.py shell createsuperuser
+# docker-compose exec django ./manage.py shell migrate
+# docker-compose exec django ./manage.py shell shell
+# docker-compose exec django ./manage.py shell createsuperuser
 # ...
 ```
 
