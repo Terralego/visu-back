@@ -18,7 +18,7 @@ def layer_callback(geosource):
         'settings': geosource.settings,
     }
 
-    layer, _ = Layer.objects.get_or_create(name=geosource.slug, defaults=defaults)
+    layer, _ = Layer.objects.get_or_create(name=geosource.slug, defaults=defaults, geom_type=geosource.geom_type)
 
     layer_groups = Group.objects.filter(pk__in=geosource.settings.get('groups', []))
 

@@ -8,6 +8,7 @@ django-geosource>=0.4.6
 terra-layer>=0.4.6
 terra-bonobo-nodes>=0.3.9
 django-terra-utils>=0.3.6,<0.4
+django-terra-geocrud>=0.3.28,<0.4
 
 django-cors-headers<3.0
 

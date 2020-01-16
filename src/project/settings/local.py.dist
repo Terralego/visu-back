@@ -31,6 +31,18 @@ TERRA_DEFAULT_MAP_SETTINGS = {
 TERRA_APPLIANCE_SETTINGS = {
     'VIEW_ROOT_PATH': 'map', # Default view
     'DEFAULT_VIEWNAME': 'test', # Default view name
-    'enabled_modules': ['User', 'DataSource', 'DataLayer'], # Enabled terra admin modules
+    'enabled_modules': ['User', 'DataSource', 'DataLayer', 'CRUD'], # Enabled terra admin modules
 }
 
+TERRA_GEOCRUD = {
+    'EXTENT': [2, 40, 6, 50],
+    'MBGLRENDERER_URL': os.getenv('MBGLRENDERER_URL', 'http://mbglrenderer'),
+    "map": {
+        "mapbox_access_token": "key_mapbox",
+        "center": [3, 46],
+        "zoom": 5,
+        "maxZoom": 17,
+        "minZoom": 3
+    },
+    "MAX_ZOOM": 17,
+}

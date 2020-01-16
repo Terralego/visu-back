@@ -36,7 +36,15 @@ INSTALLED_APPS = (
     'geostore',
     'django_geosource',
     'terra_layer',
+    'terra_geocrud',
+    'template_model',
+    'mapbox_baselayer',
+    'django.contrib.admin',
+    'django.contrib.messages',
     'custom.dataloader',
+    'django_json_widget',
+    'reversion',
+    'sorl.thumbnail',
 )
 
 AUTH_USER_MODEL = 'terra_accounts.TerraUser'
@@ -53,6 +61,7 @@ RELATIVE_SETTINGS_MODULE = os.environ.get('RELATIVE_SETTINGS_MODULE')
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': timedelta(hours=1),
     'JWT_ALLOW_REFRESH': True,
+    'JWT_PAYLOAD_HANDLER': 'terra_accounts.jwt_payload.terra_payload_handler',
 }
 
 TOKEN_TIMEOUT = 3600
@@ -179,11 +188,11 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 TILE_FLAVOR = 'smart'
 
-MIN_TILE_ZOOM = 7
+MIN_TILE_ZOOM = 2
 MAX_TILE_ZOOM = 16
+INTERNAL_GEOMETRY_SRID = 4326
 
 TERRA_TILES_HOSTNAMES = []
 
 # let DEBUG & CORS be overridable in prod
 DEBUG = False
-CORS_ORIGIN_ALLOW_ALL = False

@@ -21,6 +21,8 @@ from custom.receivers import *  # noqa
 
 urlpatterns = [
     path('api/', include('terra_layer.urls')),
+    path('api/mapbox_baselayer/', include('mapbox_baselayer.urls')),
+    path('api/crud/', include('terra_geocrud.urls')),
 ]
 
 if settings.DEBUG and False:
