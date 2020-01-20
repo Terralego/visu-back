@@ -27,7 +27,7 @@ def refresh_es(sender, **kwargs):
 
 
 @receiver(post_save, sender=Layer)
-def my_handler(sender, **kwargs):
+def create_CRUD_view_on_layer_creation(sender, **kwargs):
     layer = kwargs['instance']
     if Source.objects.filter(slug=layer.name).exists():
         CrudView.objects.get_or_create(name=layer.name, layer=layer, order=0, )
