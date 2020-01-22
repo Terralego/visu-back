@@ -17,6 +17,7 @@ services:
       - ./prod/start.sh:/code/init/start.sh
       - ./prod/cron.sh:/code/init/cron.sh
       - ./src:/code/src
+      - ./lib:/code/lib
       - ./tox.ini:/code/tox.ini
       - ./.tox:/code/.tox
       - ./requirements.txt:/code/requirements.txt
