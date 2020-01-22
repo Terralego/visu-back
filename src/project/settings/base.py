@@ -59,6 +59,11 @@ REST_FRAMEWORK = {
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'DEFAULT_PAGINATION_CLASS':
         'terra_utils.pagination.PagePagination',
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+        'url_filter.integrations.drf.URLFilterBackend',
+     ),
     'PAGE_SIZE': 100,
 
     'DEFAULT_PARSER_CLASSES': (

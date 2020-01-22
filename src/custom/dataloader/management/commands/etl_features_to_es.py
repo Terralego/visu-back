@@ -2,14 +2,13 @@ import logging
 
 import bonobo
 from bonobo.contrib.django import ETLCommand
-from django.db.models import F
 from elasticsearch import Elasticsearch, ElasticsearchException
 from elasticsearch.client import IndicesClient
-from geostore.models import Feature
+from geostore.models import Layer
 from terra_bonobo_nodes.common import ExcludeAttributes, GeometryToJson
-from terra_bonobo_nodes.elasticsearch import ESGeometryField, ESOptimizeIndexing, LoadInES
+from terra_bonobo_nodes.elasticsearch import (ESGeometryField,
+                                              ESOptimizeIndexing, LoadInES)
 from terra_bonobo_nodes.terra import ExtractFeatures
-
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +19,6 @@ GEOMETRY_FIELD = 'geom'
 class Command(ETLCommand):
     """ This is the ETL for indexing features in elasticsearch
     """
-    INDEX_NAME = 'features'
 
     def add_arguments(self, parser):
         """
@@ -39,51 +37,55 @@ class Command(ETLCommand):
         }
 
     def get_graph(self, **options):
-        queryset = Feature.objects.annotate(layer_name=F('layer__name'))
         if options['layer'] is not None:
-            queryset = queryset.filter(layer__pk=options['layer'])
-            if queryset.count():
-                self.clean_layer_index(queryset.first().layer)
-            else:
+            layer_qs = Layer.objects.filter(pk=options['layer'])
+            if not layer_qs:
                 logger.error("Layer couldn't be found")
                 return
+        else:
+            layer_qs = Layer.objects.all()
 
-        graph = bonobo.Graph()
+        for layer in layer_qs:
+            index_name = layer.name
+            queryset = layer.features.all()
 
-        graph.add_chain(
-            LoadInES(index=self.INDEX_NAME),
-            _name="load",
-            _input=None,
-        )
+            graph = bonobo.Graph()
 
-        graph.add_chain(
-            ESGeometryField(self.INDEX_NAME, 'geom'),
-            ESOptimizeIndexing(self.INDEX_NAME),
-            ExtractFeatures(queryset, extra_properties={'geom': 'geom', 'layer': 'layer_name'}),
-            ExcludeAttributes(excluded=EXCLUDED_FIELDS),
-            GeometryToJson(source='geom', destination='geom'),
+            graph.add_chain(
+                LoadInES(index=index_name),
+                _name="load",
+                _input=None,
+            )
 
-            _output='load'
-        )
+            graph.add_chain(
+                ESGeometryField(index_name, 'geom'),
+                ESOptimizeIndexing(index_name),
+                ExtractFeatures(queryset, extra_properties={'geom': 'geom', }),
+                ExcludeAttributes(excluded=EXCLUDED_FIELDS),
+                GeometryToJson(source='geom', destination='geom'),
 
-        yield graph
+                _output='load'
+            )
 
-        es = IndicesClient(self.get_services().get('es'))
-        es.flush(
-            index=self.INDEX_NAME,
-            wait_if_ongoing=True,
-        )
-        es.put_settings(
-            index=self.INDEX_NAME,
-            body={
-                "index.refresh_interval": "1s",
-            }
-        )
+            self.clean_index(index_name)
 
-    def clean_layer_index(self, layer):
+            yield graph
+
+            es = IndicesClient(self.get_services().get('es'))
+            es.flush(
+                index=index_name,
+                wait_if_ongoing=True,
+            )
+            es.put_settings(
+                index=index_name,
+                body={
+                    "index.refresh_interval": "1s",
+                }
+            )
+
+    def clean_index(self, index):
         es = self.get_services()['es']
         try:
-            es.delete_by_query(
-                index=self.INDEX_NAME, body={'query': {'match': {'layer.keyword': layer.name}}})
+            es.indices.delete(index=index, ignore=[400, 404])
         except ElasticsearchException:
             pass
