@@ -119,6 +119,8 @@ LOGGING = copy.deepcopy(DEFAULT_LOGGING)
 STATIC_ROOT = '/code/public/static/'
 STATIC_URL = '/static_dj/'
 MEDIA_ROOT = '/code/public/media/'
+MEDIA_ROOT_SECURE = os.path.join(MEDIA_ROOT, 'private')
+MEDIA_URL = '/media/'
 
 CACHES = {
     "default": {
@@ -154,7 +156,7 @@ TERRA_LAYER_VIEWS = {
 TERRA_APPLIANCE_SETTINGS = {
     'VIEW_ROOT_PATH': 'visualiser',
     'DEFAULT_VIEWNAME': 1,
-    'enabled_modules': ['User', 'DataSource', 'DataLayer'],
+    'enabled_modules': ['User', 'DataSource', 'DataLayer', 'View'],
 }
 
 DATABASES = {

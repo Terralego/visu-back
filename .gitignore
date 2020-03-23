@@ -24,3 +24,6 @@ __pycache__
 
 # corpusops & ansible
 *.retry
+
+# Other
+celerybeat.pid
