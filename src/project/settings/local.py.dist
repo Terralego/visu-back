@@ -27,22 +27,10 @@ TERRA_DEFAULT_MAP_SETTINGS = {
     },
 }
 
-# Rigth side menu entries. Also available views for layers.
-TERRA_LAYER_VIEWS = {
-    'first': {
-        'name': 'First',
-        'pk': 1,
-    },
-    'second': {
-        'name': 'Second',
-        'pk': 2,
-    },
-}
-
 # For admin
 TERRA_APPLIANCE_SETTINGS = {
-    'VIEW_ROOT_PATH': 'first', # Default view
-    'DEFAULT_VIEWNAME': 1, # Default view name
+    'VIEW_ROOT_PATH': 'map', # Default view
+    'DEFAULT_VIEWNAME': 'test', # Default view name
     'enabled_modules': ['User', 'DataSource', 'DataLayer'], # Enabled terra admin modules
 }
 

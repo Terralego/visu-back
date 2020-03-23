@@ -21,6 +21,7 @@ RUN bash -c 'set -ex \
   && apt-get install -qq -y $(grep -vE "^\s*#" /code/apt.txt  | tr "\n" " ") \
   && apt-get clean all && apt-get autoclean \
   && : "project user & workdir" \
+  && mkdir -p /share/tmp \
   && useradd -ms /bin/bash django --uid 1000'
 
 ADD prod/start.sh \
@@ -35,6 +36,7 @@ ADD lib /code/lib
 
 RUN bash -c 'set -ex \
   && chown django:django -R /code \
+  && chown django:django /share/tmp \
   && cd /code \
   && gosu django:django bash -c "python${PY_VER} -m venv venv \
   && venv/bin/pip install -U --no-cache-dir setuptools wheel \

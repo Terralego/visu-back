@@ -6,14 +6,12 @@ x-images: # Only to create template
       GUNICORN_WORKERS: 8
       GUNICORN_WORKER_CLASS: sync
     tty: true
-    image: "${DJANGO_IMAGE}:${DJANGO_IMAGE_VERSION}-dev"
+    # image: "${DJANGO_IMAGE}:${DJANGO_IMAGE_VERSION}-dev"
     # latest image is only used in prod (without dev & test tools)
     build:
       context: "."
       args:
         PY_VER: "${DJANGO_PY_VER:-3.6}"
-    build:
-      context: .
     depends_on:
     - db
     - redis
@@ -30,6 +28,7 @@ x-images: # Only to create template
       - mediafiles:/code/public/media
       - statics:/code/public/static
       - logs:/logs/
+      - share:/share/ # To share file between containers
 services:
   redis:
     image: "corpusops/redis:4.0-alpine"
@@ -74,7 +73,7 @@ services:
     - >-
       :
       && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s}
-      && /code/venv/bin/celery worker -A django_geosource -l info --autoscale 10,3
+      && /code/venv/bin/celery worker -A project.celery -l info --autoscale 10,3
     depends_on:
       - django
   celerybeat:
@@ -87,7 +86,7 @@ services:
     - >-
       :
       && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s}
-      && /code/venv/bin/celery beat --scheduler django_geosource.celery.schedulers.GeosourceScheduler -A django_geosource -l info
+      && /code/venv/bin/celery beat --scheduler django_geosource.schedulers.GeosourceScheduler -A project.celery -l info
     depends_on:
       - django
   elasticsearch:
@@ -138,3 +137,4 @@ volumes:
   logs:
   elasticsearch:
   cache:
+  share:
