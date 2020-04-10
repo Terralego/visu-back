@@ -24,7 +24,7 @@ services:
       - ./requirements-dev.txt:/code/requirements-dev.txt
       - share:/share/ # To share file between containers
     ports:
-      - "8000:8000"
+      - "8006:8000"
     build: {context: ".", args: {BUILD_DEV: "y"}}
   celery:
     environment:
