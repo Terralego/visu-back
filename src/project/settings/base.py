@@ -19,7 +19,7 @@ import six
 from django.utils.log import DEFAULT_LOGGING
 from terra_utils.helpers import Choices
 
-USE_TZ = Tue
+USE_TZ = True
 
 INSTALLED_APPS = (
     'terra_utils',
