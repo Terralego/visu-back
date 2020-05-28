@@ -28,6 +28,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'django_object_actions',
     'rest_framework',
     'rest_framework_gis',
     'corsheaders',

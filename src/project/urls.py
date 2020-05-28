@@ -14,12 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
+from django.contrib import admin
 from django.conf.urls.static import static
 from django.urls import include, path
 
 from custom.receivers import *  # noqa
 
 urlpatterns = [
+    path('', admin.site.urls),
     path('api/', include('terra_layer.urls')),
     path('api/mapbox_baselayer/', include('mapbox_baselayer.urls')),
     path('api/crud/', include('terra_geocrud.urls')),
