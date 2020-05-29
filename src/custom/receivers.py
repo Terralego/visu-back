@@ -2,9 +2,10 @@ import logging
 import sys
 from io import BytesIO
 
+from django.conf import settings
 from django.contrib.auth.models import Group
 from django.core.management import call_command
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django_geosource.models import Source, GeoJSONSource
 from django_geosource.signals import refresh_data_done
@@ -29,7 +30,7 @@ def refresh_es(sender, **kwargs):
 
 
 @receiver(post_save)
-def update_CRUD_view_on_source_creation(sender, **kwargs):
+def update_layer_on_source_creation(sender, **kwargs):
     obj = kwargs['instance']
     if isinstance(obj, Source):
         source = obj
@@ -50,23 +51,24 @@ def update_CRUD_view_on_source_creation(sender, **kwargs):
             group, _ = LayerGroup.objects.get_or_create(name=group_name)
             group.layers.add(layer)
 
-        crud_view = CrudView.objects.get_or_create(layer=layer,
-                                                   defaults={"name": layer.name, "order": 0})[0]
-        fields = source.fields.all()
-        for field in fields:
-            data_type = field.data_type
-            name = field.name
-            label = field.label
-            if data_type == 1:
-                final_type = "string"
-            elif data_type == 2:
-                final_type = "string"
-            elif data_type == 3:
-                final_type = "float"
-            elif data_type == 4:
-                final_type = "boolean"
-            property, created = CrudViewProperty.objects.get_or_create(view=crud_view, key=name)
-            property.json_schema = {"title": label, "type": final_type}
-            property.save()
+        if settings.USE_TERRAGEOCRUD:
+            crud_view = CrudView.objects.get_or_create(layer=layer,
+                                                       defaults={"name": layer.name, "order": 0})[0]
+            fields = source.fields.all()
+            for field in fields:
+                data_type = field.data_type
+                name = field.name
+                label = field.label
+                if data_type == 1:
+                    final_type = "string"
+                elif data_type == 2:
+                    final_type = "string"
+                elif data_type == 3:
+                    final_type = "float"
+                elif data_type == 4:
+                    final_type = "boolean"
+                property, created = CrudViewProperty.objects.get_or_create(view=crud_view, key=name)
+                property.json_schema = {"title": label, "type": final_type}
+                property.save()
 
-        sync_layer_schema(crud_view)
+            sync_layer_schema(crud_view)

@@ -21,6 +21,8 @@ from terra_utils.helpers import Choices
 
 USE_TZ = True
 
+USE_TERRAGEOCRUD = os.getenv('TERRAGEOCRUD', False)
+
 INSTALLED_APPS = (
     'terra_utils',
     'django.contrib.auth',
@@ -28,7 +30,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'django_object_actions',
     'rest_framework',
     'rest_framework_gis',
     'corsheaders',
@@ -37,7 +38,7 @@ INSTALLED_APPS = (
     'geostore',
     'django_geosource',
     'terra_layer',
-    'terra_geocrud',
+
     'template_model',
     'mapbox_baselayer',
     'django.contrib.admin',
@@ -47,6 +48,10 @@ INSTALLED_APPS = (
     'reversion',
     'sorl.thumbnail',
 )
+
+if USE_TERRAGEOCRUD:
+    INSTALLED_APPS += ('terra_geocrud',
+                       'django_object_actions')
 
 AUTH_USER_MODEL = 'terra_accounts.TerraUser'
 
