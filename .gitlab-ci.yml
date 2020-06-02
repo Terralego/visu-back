@@ -7,6 +7,9 @@ build:
   variables:
     DOCKER_DRIVER: overlay2
     REGISTRY_URL: registry.makina-corpus.net
+    # These 2 variables are defined in GitLab CI's settings
+    REGISTRY_USER:
+    REGISTRY_PASSWD:
     DOCKER_IMAGE: "${REGISTRY_URL}/terralego/visu-back"
   before_script:
     - echo "${REGISTRY_PASSWD}" |docker login -u ${REGISTRY_USER} --password-stdin ${REGISTRY_URL}
@@ -15,6 +18,7 @@ build:
     - docker pull "${DOCKER_IMAGE}:latest" || true
     - docker build --cache-from "${DOCKER_IMAGE}:latest" --tag "${DOCKER_IMAGE}:latest" .
     - docker tag "${DOCKER_IMAGE}:latest" "${DOCKER_IMAGE}:${CI_COMMIT_REF_NAME}"
-    - docker push "${DOCKER_IMAGE}:${DOCKER_IMAGE_VERSION}"
+    - docker push "${DOCKER_IMAGE}:latest"
+    - docker push "${DOCKER_IMAGE}:${CI_COMMIT_REF_NAME}"
   #only:
   #  - master
