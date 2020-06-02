@@ -1,9 +1,20 @@
-image: ubuntu:18.04
-stages:
-  - manual_jobs
-  - build
-  - tests
-  - flag_success
-  - release
-  - teardown
-  - deploy
+build:
+  image: docker:stable
+  tags:
+    - shared-ci-docker
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    REGISTRY_URL: registry.makina-corpus.net
+    DOCKER_IMAGE: "${REGISTRY_URL}/terralego/visu-back"
+  before_script:
+    - echo "${REGISTRY_PASSWD}" |docker login -u ${REGISTRY_USER} --password-stdin ${REGISTRY_URL}
+  script:
+    # Reuse latest available image for build
+    - docker pull "${DOCKER_IMAGE}:latest" || true
+    - docker build --cache-from "${DOCKER_IMAGE}:latest" --tag "${DOCKER_IMAGE}:latest" .
+    - docker tag "${DOCKER_IMAGE}:latest" "${DOCKER_IMAGE}:${CI_COMMIT_REF_NAME}"
+    - docker push "${DOCKER_IMAGE}:${DOCKER_IMAGE_VERSION}"
+  #only:
+  #  - master
