@@ -20,5 +20,5 @@ build:
     - docker tag "${DOCKER_IMAGE}:latest" "${DOCKER_IMAGE}:${CI_COMMIT_REF_NAME}"
     - docker push "${DOCKER_IMAGE}:latest"
     - docker push "${DOCKER_IMAGE}:${CI_COMMIT_REF_NAME}"
-  #only:
-  #  - master
+  only:
+    - master
