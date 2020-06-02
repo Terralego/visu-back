@@ -10,8 +10,9 @@ from django.dispatch import receiver
 from django_geosource.models import Source, GeoJSONSource
 from django_geosource.signals import refresh_data_done
 from geostore.models import Layer, LayerGroup
-from terra_geocrud.models import CrudView, CrudViewProperty
-from terra_geocrud.properties.schema import sync_layer_schema
+if settings.USE_TERRAGEOCRUD:
+    from terra_geocrud.models import CrudView, CrudViewProperty
+    from terra_geocrud.properties.schema import sync_layer_schema
 
 logger = logging.getLogger(__name__)
 

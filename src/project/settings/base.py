@@ -21,7 +21,7 @@ from terra_utils.helpers import Choices
 
 USE_TZ = True
 
-USE_TERRAGEOCRUD = os.getenv('TERRAGEOCRUD', False)
+USE_TERRAGEOCRUD =  os.environ.get('TERRAGEOCRUD', False)
 
 INSTALLED_APPS = (
     'terra_utils',
