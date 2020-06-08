@@ -41,16 +41,16 @@ INSTALLED_APPS = (
     'mapbox_baselayer',
     'django.contrib.admin',
     'django.contrib.messages',
-    'custom.dataloader',
-    'django_json_widget',
-    'reversion',
-    'sorl.thumbnail',
+    'custom.dataloader'
 )
 
 if USE_TERRAGEOCRUD:
     INSTALLED_APPS += ('terra_geocrud',
                        'django_object_actions',
-                       'template_model')
+                       'template_model',
+                       'django_json_widget',
+                       'reversion',
+                       'sorl.thumbnail')
 
 AUTH_USER_MODEL = 'terra_accounts.TerraUser'
 
