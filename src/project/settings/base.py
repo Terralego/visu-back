@@ -21,7 +21,7 @@ from terra_utils.helpers import Choices
 
 USE_TZ = True
 
-USE_TERRAGEOCRUD =  os.environ.get('TERRAGEOCRUD', False)
+USE_TERRAGEOCRUD = os.environ.get('TERRAGEOCRUD', False)
 
 INSTALLED_APPS = (
     'terra_utils',
@@ -38,8 +38,6 @@ INSTALLED_APPS = (
     'geostore',
     'django_geosource',
     'terra_layer',
-
-    'template_model',
     'mapbox_baselayer',
     'django.contrib.admin',
     'django.contrib.messages',
@@ -51,7 +49,8 @@ INSTALLED_APPS = (
 
 if USE_TERRAGEOCRUD:
     INSTALLED_APPS += ('terra_geocrud',
-                       'django_object_actions')
+                       'django_object_actions',
+                       'template_model')
 
 AUTH_USER_MODEL = 'terra_accounts.TerraUser'
 
