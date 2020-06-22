@@ -10,11 +10,11 @@ os.environ["RELATIVE_SETTINGS_MODULE"] = ".dev"
 SECRET_KEY = os.environ.get("SECRET_KEY", "secretkey-superhot-12345678")
 
 ALLOWED_HOSTS = ["*"]
+CORS_ORIGIN_ALLOW_ALL = True
+
 # INTERNAL_IPS = ('127.0.0.1',)  # Used by app debug_toolbar
 DEBUG = True
 SWAGGER_ENABLED = DEBUG
-
-
 
 STATICFILES_DIRS = []
 MEDIA_ACCEL_REDIRECT = False
