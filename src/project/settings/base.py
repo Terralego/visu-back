@@ -174,9 +174,6 @@ DATABASES = {
 
 STATES = Choices()
 
-ALLOWED_HOSTS = ['*', ]
-CORS_ORIGIN_ALLOW_ALL = True
-
 TILE_FLAVOR = 'smart'
 
 MIN_TILE_ZOOM = 7
@@ -187,3 +184,25 @@ TERRA_TILES_HOSTNAMES = []
 # let DEBUG & CORS be overridable in prod
 DEBUG = False
 CORS_ORIGIN_ALLOW_ALL = False
+
+
+# pyfile storage use to load and store data
+PYFILE_BACKEND = os.getenv("PYFILES_BACKEND")
+PYFILE_OPTIONS = {
+    "access_key": os.getenv("PYFILES_ACCESS_KEY"),
+    "secret_key": os.getenv("PYFILES_SECRET_KEY"),
+    "endpoint_url": os.getenv("PYFILES_ENDPOINT_URL"),
+    "region_name": os.getenv("PYFILES_REGION_NAME"),
+    "bucket_name": os.getenv("PYFILES_BUCKET_NAME"),
+}
+
+# Use for test datas
+SOURCE_FILES = [
+    ("aerodromes_points_4326.geojson", "Point", "ID_RTE500"),
+    ("autoroutes_lines_4326.geojson", "MultiLineString", "ID_RTE500"),
+    ("chefslieux_points_4326.geojson", "Point", "ID"),
+    ("departements_polygons_4326.geojson", "MultiPolygon", "ID"),
+    ("regions_polygon_4326.geojson", "MultiPolygon", "ID"),
+    ("reseauferre_lines_4326.geojson", "MultiLineString", "ID_RTE500"),
+]
+STORAGE_NAMESPACE = "VISU:datas"
