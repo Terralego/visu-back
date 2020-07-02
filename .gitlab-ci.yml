@@ -1,7 +1,7 @@
 build:
   image: docker:stable
   tags:
-    - shared-ci-docker
+    - visu-cicd-docker
   services:
     - docker:dind
   variables:
