@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 x-images:
   bypass: &bypass
     command: 'sh -c "while true;do echo notstarted;sleep 65000;done"'
@@ -25,7 +25,7 @@ services:
       - share:/share/ # To share file between containers
     ports:
       - "8006:8000"
-    build: {context: ".", args: {BUILD_DEV: "y"}}
+    build: { context: ".", args: { BUILD_DEV: "y" } }
   celery:
     environment:
       - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.dev}
@@ -47,4 +47,3 @@ services:
   elasticsearch:
     hostname: elasticsearch
     image: elasticsearch:6.4.3
-
