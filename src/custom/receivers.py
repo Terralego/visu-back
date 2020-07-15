@@ -13,7 +13,6 @@ logger = logging.getLogger(__name__)
 def refresh_es(sender, **kwargs):
     try:
         logger.info('Starting elasticsearch indexing')
-        sys.stdout.encoding = None
         sys.stdout.buffer = BytesIO()
         call_command('etl_features_to_es', '-layer', kwargs['layer']) #noqa
         logger.info('Elasticsearch indexing sucess')
