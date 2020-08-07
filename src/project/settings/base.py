@@ -206,3 +206,5 @@ SOURCE_FILES = [
     ("reseauferre_lines_4326.geojson", "MultiLineString", "ID_RTE500"),
 ]
 STORAGE_NAMESPACE = "VISU:datas"
+
+LANGUAGE_CODE = os.getenv('LANGUAGE_CODE')
