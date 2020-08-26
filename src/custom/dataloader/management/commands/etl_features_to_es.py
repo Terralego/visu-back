@@ -9,6 +9,8 @@ from terra_bonobo_nodes.common import ExcludeAttributes, GeometryToJson
 from terra_bonobo_nodes.elasticsearch import (ESGeometryField,
                                               ESOptimizeIndexing, LoadInES)
 from terra_bonobo_nodes.terra import ExtractFeatures
+from django_geosource.models import Source, FieldTypes
+from collections import defaultdict
 
 logger = logging.getLogger(__name__)
 
@@ -68,6 +70,7 @@ class Command(ETLCommand):
             )
 
             self.clean_index(index_name)
+            self.create_index(layer)
 
             yield graph
 
@@ -89,3 +92,53 @@ class Command(ETLCommand):
             es.indices.delete(index=index, ignore=[400, 404])
         except ElasticsearchException:
             pass
+
+    def create_index(self, layer):
+        """
+        Create ES index with specified type mapping from layer source
+        If mapping not available, we switch on ES type guessing
+        """
+        try:
+            s = Source.objects.get(slug=layer.name)
+        except Source.DoesNotExist:
+            # If no source, we igore it. Type will be guessed later.
+            pass
+
+        # Pre create index only for source if configured
+        if not s.settings.get('create_index'):
+            logger.info(f'No index creation for layer {layer.name}')
+            return
+
+        logger.info(f'Index creation for layer {layer.name}')
+
+        type_mapping = defaultdict(lambda: 'text')
+        type_mapping['integer'] = 'long'
+        type_mapping['float'] = 'float'
+        type_mapping['boolean'] = 'boolean'
+        type_mapping['date'] = 'date'
+
+        # Get type from source field configuration. Ignore undefined types.
+        field_conf = {}
+        for field in s.fields.all():
+            if field.data_type != 5:
+                field_type = type_mapping[FieldTypes(field.data_type).name.lower()]
+                if field_type == 'text':
+                    # Exception for text field, we also want them to be keyword accessible
+                    field_conf[field.name] = {
+                        'type': field_type,
+                        "fields":{"keyword":{"type":"keyword","ignore_above":256}}
+                    }
+                else:
+                    field_conf[field.name] = { "type": field_type }
+
+        # Create query body with mapping
+        body = {'mappings':{
+            '_doc':{"properties": field_conf}
+        }}
+        
+        es = self.get_services()['es']
+        try:
+            es.indices.create(layer.name, body=body)
+        except ElasticsearchException:
+            logger.exception("ES index for layer {layer.name} can't be created")
+
