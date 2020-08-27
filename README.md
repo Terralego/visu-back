@@ -133,6 +133,7 @@ docker-compose -f docker-compose.yml -f docker-compose-dev.yml pull # Call the d
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml build # Should be launched once each time you want to start the stack
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml up django # Should be launched once each time you want to start the stack
 # Take care that no migrations are run, so you can't launch celery/celerybeat container until migration are applied.
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml up # For normal start when migration are applied
 ```
 
 #### For production purpose
