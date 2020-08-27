@@ -102,7 +102,7 @@ class Command(ETLCommand):
             s = Source.objects.get(slug=layer.name)
         except Source.DoesNotExist:
             # If no source, we igore it. Type will be guessed later.
-            pass
+            return
 
         # Pre create index only for source if configured
         if not s.settings.get('create_index'):
@@ -130,6 +130,13 @@ class Command(ETLCommand):
                     }
                 else:
                     field_conf[field.name] = { "type": field_type }
+
+        # Add geom default type mapping
+        field_conf['geom'] = {
+            "type": "geo_shape",
+            "tree": "quadtree",
+            "ignore_z_value": True
+        }
 
         # Create query body with mapping
         body = {'mappings':{
