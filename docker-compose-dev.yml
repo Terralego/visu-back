@@ -46,4 +46,4 @@ services:
       - share:/share/ # To share file between containers
   elasticsearch:
     hostname: elasticsearch
-    image: elasticsearch:6.8.12
+    image: elasticsearch:7.9.1
