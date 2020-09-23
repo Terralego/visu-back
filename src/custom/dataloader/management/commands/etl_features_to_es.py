@@ -101,12 +101,12 @@ class Command(ETLCommand):
         try:
             s = Source.objects.get(slug=layer.name)
         except Source.DoesNotExist:
-            # If no source, we igore it. Type will be guessed later.
+            # If no source, we ignore it. Type will be guessed later.
             return
 
         # Pre create index only for source if configured
         if not s.settings.get('create_index'):
-            logger.info(f'No index creation for layer {layer.name}')
+            logger.info(f'No index pre-creation for layer {layer.name}')
             return
 
         logger.info(f'Index creation for layer {layer.name}')
@@ -125,7 +125,7 @@ class Command(ETLCommand):
                 if field_type == 'text':
                     # Exception for text field, we also want them to be keyword accessible
                     field_conf[field.name] = {
-                        'type': field_type,
+                        "type": field_type,
                         "fields":{"keyword":{"type":"keyword","ignore_above":256}}
                     }
                 else:
@@ -134,14 +134,15 @@ class Command(ETLCommand):
         # Add geom default type mapping
         field_conf['geom'] = {
             "type": "geo_shape",
-            "tree": "quadtree",
             "ignore_z_value": True
         }
 
         # Create query body with mapping
-        body = {'mappings':{
-            '_doc':{"properties": field_conf}
-        }}
+        body = {
+            'mappings': {
+                "properties": field_conf
+            }
+        }
         
         es = self.get_services()['es']
         try:
