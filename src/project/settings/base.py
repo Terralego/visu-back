@@ -196,13 +196,5 @@ PYFILE_OPTIONS = {
     "bucket_name": os.getenv("PYFILES_BUCKET_NAME"),
 }
 
-# Use for test datas
-SOURCE_FILES = [
-    ("aerodromes_points_4326.geojson", "Point", "ID_RTE500"),
-    ("autoroutes_lines_4326.geojson", "MultiLineString", "ID_RTE500"),
-    ("chefslieux_points_4326.geojson", "Point", "ID"),
-    ("departements_polygons_4326.geojson", "MultiPolygon", "ID"),
-    ("regions_polygon_4326.geojson", "MultiPolygon", "ID"),
-    ("reseauferre_lines_4326.geojson", "MultiLineString", "ID_RTE500"),
-]
+
 STORAGE_NAMESPACE = "VISU:datas"
