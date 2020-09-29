@@ -63,8 +63,12 @@ services:
       - SUPERVISORD_CONFIGS=/etc/supervisor.d/cron /etc/supervisor.d/nginx /etc/supervisor.d/rsyslog
   django:
     <<: [*django]
+    healthcheck:
+      test:  ["CMD-SHELL", "curl --fail http://localhost:8000/api/settings || exit 1"]
   celery:
     <<: [*django]
+    healthcheck:
+      test:  ["CMD-SHELL", "/code/venv/bin/celery -A project.celery inspect ping"]
     environment:
       - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.prod}
     command:
@@ -73,11 +77,13 @@ services:
       - >-
         :
         && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s}
-        && /code/venv/bin/celery worker -A project.celery -l info --autoscale 10,3
+        && /code/venv/bin/celery  -A project.celery worker -l INFO --autoscale 10,3
     depends_on:
       - django
   celerybeat:
     <<: [*django]
+    healthcheck:
+      test:  ["CMD-SHELL", "/code/venv/bin/celery -A project.celery inspect ping"]
     environment:
       - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.prod}
     command:
@@ -86,7 +92,7 @@ services:
       - >-
         :
         && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s}
-        && /code/venv/bin/celery beat --scheduler django_geosource.schedulers.GeosourceScheduler -A project.celery -l info
+        && /code/venv/bin/celery  -A project.celery beat --scheduler django_geosource.schedulers.GeosourceScheduler -l INFO
     depends_on:
       - django
   elasticsearch:
