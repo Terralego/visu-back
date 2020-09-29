@@ -11,6 +11,9 @@ django-terra-utils>=0.3.6,<0.4
 
 django-cors-headers<3.0
 
+# Fix celery version
+celery>= 5.0.0,<=6.0.0
+
 raven==6.10.0
 
 # ETL
@@ -28,3 +31,5 @@ eventlet>=0.24,<0.25
 
 # Temporary fix for a celery bug
 future
+
+
