@@ -17,12 +17,12 @@ from importlib import import_module
 
 import six
 from django.utils.log import DEFAULT_LOGGING
-from terra_utils.helpers import Choices
+from terra_settings.helpers import Choices
 
 USE_TZ = True
 
 INSTALLED_APPS = (
-    'terra_utils',
+    'terra_settings',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'geostore',
     'django_geosource',
     'terra_layer',
+    'mapbox_baselayer',
     'custom.dataloader',
 )
 
@@ -60,7 +61,7 @@ TOKEN_TIMEOUT = 3600
 REST_FRAMEWORK = {
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'DEFAULT_PAGINATION_CLASS':
-        'terra_utils.pagination.PagePagination',
+        'terra_settings.pagination.PagePagination',
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
