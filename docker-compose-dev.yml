@@ -6,6 +6,8 @@ x-images:
     restart: "no"
 services:
   django:
+    stdin_open: true
+    tty: true
     environment:
       - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.dev}
       - NO_MIGRATE=1

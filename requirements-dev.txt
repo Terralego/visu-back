@@ -9,3 +9,4 @@ tblib
 pdb_clone
 
 xlrd
+black
