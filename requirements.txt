@@ -5,7 +5,7 @@ django-redis>=4.10,<4.11
 django-terra-accounts>=0.3,<0.4
 django-geostore>0.3.4
 django-geosource>=0.4.9
-terra-layer>=0.5.1
+terra-layer>=0.5.2
 terra-bonobo-nodes>=0.5.1
 django-terra-settings>=0.1.1,<0.2
 
