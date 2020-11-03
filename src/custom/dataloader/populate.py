@@ -21,8 +21,10 @@ TEST_SOURCE_FILES = [
     ("aerodromes_points_4326.geojson", "Point", "ID_RTE500", "Airport", {
         "table_enable": True,
         "table_export_enable": True,
-        "popup_enable": True,
-        "popup_template": "# {{TOPONYME}}",
+        "popup_config": {
+            "enable": True,
+            "template": "# {{TOPONYME}}",
+        },
         "settings": {
             "widgets": [
                 {
