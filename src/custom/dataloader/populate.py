@@ -18,69 +18,98 @@ UserModel = get_user_model()
 
 # Use for test datas
 TEST_SOURCE_FILES = [
-    ("aerodromes_points_4326.geojson", "Point", "ID_RTE500", "Airport", {
-        "table_enable": True,
-        "table_export_enable": True,
-        "popup_config": {
-            "enable": True,
-            "template": "# {{TOPONYME}}",
-        },
-        "settings": {
-            "widgets": [
-                {
-                    "items": [
+    (
+        "aerodromes_points_4326.geojson",
+        "Point",
+        "id",
+        "Airport",
+        {
+            "table_enable": True,
+            "table_export_enable": True,
+            "popup_config": {
+                "enable": True,
+                "template": "# {{TOPONYME}}",
+            },
+            "settings": {
+                "widgets": [
                     {
-                        "name": "nbAirport",
-                        "type": "value_count",
-                        "field": "_feature_id",
-                        "label": "Airport count",
-                        "template": "{{value | int | formatNumber }}"
+                        "items": [
+                            {
+                                "name": "nbAirport",
+                                "type": "value_count",
+                                "field": "_feature_id",
+                                "label": "Airport count",
+                                "template": "{{value | int | formatNumber }}",
+                            }
+                        ],
+                        "component": "synthesis",
                     }
-                    ],
-                    "component": "synthesis"
-                }
-            ]
-        }
-    }),
-    ("autoroutes_lines_4326.geojson", "MultiLineString", "ID_RTE500", "Highway", {}),
-    ("departements_polygons_4326.geojson", "MultiPolygon", "ID", "Departement", {}),
+                ]
+            },
+        },
+    ),
+    ("autoroutes_lines_4326.geojson", "MultiLineString", "fid", "Highway", {}),
+    ("departements_polygons_4326.geojson", "MultiPolygon", "gid", "Departement", {}),
     ("chefslieux_points_4326.geojson", "Point", "ID", "Chef lieux", {}),
-    ("regions_polygon_4326.geojson", "MultiPolygon", "ID", "Region", {}),
-    ("reseauferre_lines_4326.geojson", "MultiLineString", "ID_RTE500", "Train line", {}),
+    ("regions_polygon_4326.geojson", "MultiPolygon", "gid", "Region", {}),
+    (
+        "reseauferre_lines_4326.geojson",
+        "MultiLineString",
+        "fid",
+        "Train line",
+        {},
+    ),
 ]
 
 
-
 def load_data():
-    print('Nothing to do here !')
+    print("Nothing to do here !")
     #  Load your default data here
+
 
 def load_test_data():
     create_test_users()
     load_test_source_and_layer()
 
 
-colors = ["#40d892", "#d86500", "#6e90ff", "#abcb00", "#8da2dd", "#a90c13", "#94f686", "#dcb927", "#0063E4"]
+colors = [
+    "#40d892",
+    "#d86500",
+    "#6e90ff",
+    "#abcb00",
+    "#8da2dd",
+    "#a90c13",
+    "#94f686",
+    "#dcb927",
+    "#0063E4",
+]
+
 
 def get_default_style(geom_type):
     current_color = colors.pop()
-    if geom_type == 'Point':
+    if geom_type == "Point":
         return {"type": "circle", "paint": {"circle-color": current_color}}
-    elif geom_type == 'MultiLineString':
+    elif geom_type == "MultiLineString":
         return {"type": "line", "paint": {"line-color": current_color, "line-width": 2}}
-    elif geom_type == 'MultiPolygon':
+    elif geom_type == "MultiPolygon":
         return {"type": "line", "paint": {"line-color": current_color, "line-width": 2}}
 
     return {"type": "circle", "paint": {"circle-color": current_color}}
+
 
 @transaction.atomic()
 def load_test_source_and_layer():
     print("Populate sources and scenes")
 
-    pyfile_storage = get_storage(settings.PYFILE_BACKEND, settings.PYFILE_OPTIONS,)
+    pyfile_storage = get_storage(
+        settings.PYFILE_BACKEND,
+        settings.PYFILE_OPTIONS,
+    )
 
     # Create test scenes
-    map_scene, _ = Scene.objects.update_or_create(name="Map scene", defaults={"tree": []})
+    map_scene, _ = Scene.objects.update_or_create(
+        name="Map scene", defaults={"tree": []}
+    )
     story_scene, _ = Scene.objects.get_or_create(
         name="Story scene", category="story", defaults={"tree": []}
     )
@@ -105,7 +134,7 @@ def load_test_source_and_layer():
 
         print("Load data into db...")
         source, created = GeoJSONSource.objects.update_or_create(
-            name=name, geom_type=geom_type, id_field=id_field, defaults={'file': f}
+            name=name,  defaults={"file": f, "geom_type": geom_type, "id_field": id_field,}
         )
 
         source.update_fields()
@@ -114,7 +143,7 @@ def load_test_source_and_layer():
             source=source,
             name=source.name,
             active_by_default=True,
-            defaults = {"layer_style": get_default_style(geom_name), **extra_layer_data}
+            defaults={"layer_style": get_default_style(geom_name), **extra_layer_data},
         )
 
         for field in source.fields.all():
@@ -123,9 +152,19 @@ def load_test_source_and_layer():
 
         # roughly split the test files between two scenes so both map & story can be tested
         if i < len(TEST_SOURCE_FILES) / 2:
-            map_scene.insert_in_tree(layer, ["Group",])
+            map_scene.insert_in_tree(
+                layer,
+                [
+                    "Group",
+                ],
+            )
         else:
-            story_scene.insert_in_tree(layer, ["Group",])
+            story_scene.insert_in_tree(
+                layer,
+                [
+                    "Group",
+                ],
+            )
 
         # data needs to be refresh to be accessible on the map
         print("Refresh data...")
@@ -136,8 +175,18 @@ def create_test_users():
     print("Populate test users...")
 
     users_data = [
-        {"email": "admin@terralego.fake", "_groups": [], "_is_superuser": True, "password": "password"},
-        {"email": "visu@terralego.fake", "_groups": [], "_is_superuser": False, "password": "password"}
+        {
+            "email": "admin@terralego.fake",
+            "_groups": [],
+            "_is_superuser": True,
+            "password": "password",
+        },
+        {
+            "email": "visu@terralego.fake",
+            "_groups": [],
+            "_is_superuser": False,
+            "password": "password",
+        },
     ]
 
     groups = {}
@@ -150,14 +199,13 @@ def create_test_users():
         fields = {k: v for k, v in user_data.items() if not k.startswith("_")}
 
         try:
-            UserModel.objects.get(email=user_data['email'])
+            UserModel.objects.get(email=user_data["email"])
             # TODO should update user
         except UserModel.DoesNotExist:
             if is_superuser:
                 user = UserModel.objects.create_superuser(**fields)
             else:
                 user = UserModel.objects.create_user(**fields)
-
 
         user_groups = user_data.get("_groups")
         if user_groups:
