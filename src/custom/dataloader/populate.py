@@ -134,7 +134,12 @@ def load_test_source_and_layer():
 
         print("Load data into db...")
         source, created = GeoJSONSource.objects.update_or_create(
-            name=name,  defaults={"file": f, "geom_type": geom_type, "id_field": id_field,}
+            name=name,
+            defaults={
+                "file": f,
+                "geom_type": geom_type,
+                "id_field": id_field,
+            },
         )
 
         source.update_fields()
