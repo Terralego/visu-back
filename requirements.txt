@@ -2,12 +2,12 @@ Django>=2.2.11,<3.0
 djangorestframework>=3.9.0,<3.11.0
 django-redis>=4.10,<4.11
 
-django-terra-accounts>=0.3,<0.4
-django-geostore>0.3.4,<=0.5.3
-django-geosource>=0.4.9,<=0.6.0
-terra-layer>=0.5.3,<0.6
+django-terra-accounts>=1.0.1,<1.1
+django-geostore>=0.5.4,<0.6
+django-geosource>=0.4.10,<0.5
+terra-layer>=0.7,<0.8
 terra-bonobo-nodes>=0.5.1,<0.6
-django-terra-settings>=0.1.1,<0.2
+django-terra-settings>=1.0,<1.1
 
 django-cors-headers<3.0
 
