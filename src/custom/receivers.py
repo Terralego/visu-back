@@ -12,9 +12,9 @@ logger = logging.getLogger(__name__)
 @receiver(refresh_data_done)
 def refresh_es(sender, **kwargs):
     try:
-        logger.info('Starting elasticsearch indexing...')
+        logger.info("Starting elasticsearch indexing...")
         try:
-            # Fix incompatibility with LoggingProxy from celery and 
+            # Fix incompatibility with LoggingProxy from celery and
             # mondrian from bonobo
             sys.stdout.buffer = BytesIO()
             sys.stdout.encoding = None
@@ -22,11 +22,11 @@ def refresh_es(sender, **kwargs):
             # This is a hack, should fails with some conditions
             pass
 
-        call_command('etl_features_to_es', '-layer', kwargs['layer']) #noqa
+        call_command("etl_features_to_es", "-layer", kwargs["layer"])  # noqa
 
-        logger.info('Elasticsearch indexing succeed')
+        logger.info("Elasticsearch indexing succeed")
 
     except:
-        logger.error('An error occurend during elastic search indexing', exc_info=True)
+        logger.error("An error occurend during elastic search indexing", exc_info=True)
 
-    logger.info('End of elasticsearch indexing')
+    logger.info("End of elasticsearch indexing")

@@ -20,7 +20,7 @@ from django.urls import include, path
 from custom.receivers import *  # noqa
 
 urlpatterns = [
-    path('api/', include('terra_layer.urls')),
+    path("api/", include("terra_layer.urls")),
 ]
 
 if settings.DEBUG:
