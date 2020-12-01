@@ -3,16 +3,16 @@ djangorestframework>=3.9.0,<3.11.0
 django-redis>=4.10,<4.11
 
 django-terra-accounts>=0.3,<0.4
-django-geostore>0.3.4
-django-geosource>=0.4.9
-terra-layer>=0.5.3
-terra-bonobo-nodes>=0.5.1
+django-geostore>0.3.4,<=0.5.3
+django-geosource>=0.4.9,<=0.6.0
+terra-layer>=0.5.3,<0.6
+terra-bonobo-nodes>=0.5.1,<0.6
 django-terra-settings>=0.1.1,<0.2
 
 django-cors-headers<3.0
 
 # Fix celery version
-celery>= 5.0.0,<=6.0.0
+celery>=5.0.0,<=6.0.0
 
 raven==6.10.0
 
@@ -32,4 +32,5 @@ eventlet>=0.24,<0.25
 # Temporary fix for a celery bug
 future
 
-
+# Temp fix for https://github.com/boto/botocore/issues/2187
+urllib3>=1.25.4
