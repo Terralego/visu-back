@@ -218,7 +218,8 @@ elasticsearch_1   | [1]: max virtual memory areas vm.max_map_count [65530] is to
   sudo sysctl -w vm.max_map_count=262144
 ```
 
-  sudo vim /etc/sysctl.conf -> vm.max_map_count=262144
+  sysctl -w vm.max_map_count=262144 # To make it effective immediatly
+  sudo vim /etc/sysctl.conf -> vm.max_map_count=262144 # To keep it on next startup
 
 # 🎈 Usage <a name="usage"></a>
 
