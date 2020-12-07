@@ -102,8 +102,8 @@ def load_test_source_and_layer():
     print("Populate sources and scenes")
 
     pyfile_storage = get_storage(
-        settings.PYFILE_BACKEND,
-        settings.PYFILE_OPTIONS,
+        settings.PYFILES_BACKEND,
+        settings.PYFILES_OPTIONS,
     )
 
     # Create test scenes
