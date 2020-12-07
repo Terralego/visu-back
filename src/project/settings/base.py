@@ -181,8 +181,8 @@ CORS_ORIGIN_ALLOW_ALL = False
 
 
 # pyfile storage use to load and store data
-PYFILE_BACKEND = os.getenv("PYFILES_BACKEND")
-PYFILE_OPTIONS = {
+PYFILES_BACKEND = os.getenv("PYFILES_BACKEND")
+PYFILES_OPTIONS = {
     "access_key": os.getenv("PYFILES_ACCESS_KEY"),
     "secret_key": os.getenv("PYFILES_SECRET_KEY"),
     "endpoint_url": os.getenv("PYFILES_ENDPOINT_URL"),

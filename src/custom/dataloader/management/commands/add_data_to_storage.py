@@ -20,7 +20,7 @@ class Command(BaseCommand):
         filename = options.get("filename")
         version = options.get("version")
 
-        storage = get_storage(settings.PYFILE_BACKEND, settings.PYFILE_OPTIONS)
+        storage = get_storage(settings.PYFILES_BACKEND, settings.PYFILES_OPTIONS)
         loop = asyncio.get_event_loop()
         with open(filepath, mode="rb") as f:
             loop.run_until_complete(storage.store(f, namespace, filename, version))
