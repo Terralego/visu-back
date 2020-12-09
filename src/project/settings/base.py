@@ -154,7 +154,7 @@ TERRA_LAYER_VIEWS = {}
 TERRA_APPLIANCE_SETTINGS = {
     "VIEW_ROOT_PATH": "visualiser",
     "DEFAULT_VIEWNAME": 1,
-    "enabled_modules": ["User", "DataSource", "DataLayer", "View"],
+    "enabled_modules": ["User", "DataSource", "DataLayer", "View", "BaseLayer"],
 }
 
 DATABASES = {
