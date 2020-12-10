@@ -148,7 +148,14 @@ def load_test_source_and_layer():
             source=source,
             name=source.name,
             active_by_default=True,
-            defaults={"layer_style": get_default_style(geom_name), **extra_layer_data},
+            defaults={
+                "main_style": {
+                    "map_style": get_default_style(geom_name),
+                    "map_style_type": get_default_style(geom_name)["type"],
+                    "type": "advanced",
+                },
+                **extra_layer_data,
+            },
         )
 
         for field in source.fields.all():
