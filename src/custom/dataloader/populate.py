@@ -12,7 +12,7 @@ from django_geosource.models import (
     GeometryTypes,
 )
 from pyfiles.storages import get_storage
-from terra_layer.models import Layer, Scene
+from terra_layer.models import Layer, Scene, FilterField
 
 UserModel = get_user_model()
 
@@ -46,6 +46,32 @@ TEST_SOURCE_FILES = [
                     }
                 ]
             },
+            "filters": {
+                "layer": "airport",
+                "mainField": None,
+                "fields": [],
+                "form": [
+                    {
+                        "property": "categorie",
+                        "label": "Category",
+                        "type": "many",
+                        "order": 0,
+                        "values": [],
+                        "fetchValues": True,
+                        "proposeValues": "all",
+                    },
+                    {
+                        "property": "statut_du_toponyme",
+                        "label": "Name status",
+                        "type": "many",
+                        "order": 1,
+                        "values": [],
+                        "fetchValues": True,
+                        "proposeValues": "all",
+                    },
+                ],
+                "exportable": False,
+            },
         },
     ),
     ("autoroutes_lines_4326.geojson", "MultiLineString", "fid", "Highway", {}),
@@ -78,6 +104,10 @@ colors = [
     "#6e90ff",
     "#abcb00",
     "#8da2dd",
+    "#a90c13",
+    "#94f686",
+    "#dcb927",
+    "#0063E4",
     "#a90c13",
     "#94f686",
     "#dcb927",
@@ -144,14 +174,15 @@ def load_test_source_and_layer():
 
         source.update_fields()
 
+        default_style = get_default_style(geom_name)
         layer, _ = Layer.objects.update_or_create(
             source=source,
             name=source.name,
             active_by_default=True,
             defaults={
                 "main_style": {
-                    "map_style": get_default_style(geom_name),
-                    "map_style_type": get_default_style(geom_name)["type"],
+                    "map_style": default_style,
+                    "map_style_type": default_style["type"],
                     "type": "advanced",
                 },
                 **extra_layer_data,
@@ -160,7 +191,9 @@ def load_test_source_and_layer():
 
         for field in source.fields.all():
             if not layer.fields_filters.filter(field__name=field.name).exists():
-                layer.fields_filters.create(field=field)
+                FilterField.objects.get_or_create(
+                    field=field, layer=layer, defaults={"label": field.name}
+                )
 
         # roughly split the test files between two scenes so both map & story can be tested
         if i < len(TEST_SOURCE_FILES) / 2:
