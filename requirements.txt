@@ -101,7 +101,7 @@ sniffio==1.2.0            # via httpcore, httpx
 sqlparse==0.4.1           # via django
 stevedore==1.32.0         # via bonobo
 terra-bonobo-nodes==0.5.2  # via -r requirements.in
-terra-layer==0.7.2        # via -r requirements.in
+terra-layer==0.7.3        # via -r requirements.in
 texttable==1.6.3          # via pyexcel
 toml==0.10.2              # via pytest
 ujson==4.0.1              # via sanic
