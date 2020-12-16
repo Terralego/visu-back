@@ -5,9 +5,11 @@
 #    pip-compile
 #
 aiofiles==0.6.0           # via sanic
+aiohttp==3.7.3            # via pyfiles
 amqp==5.0.2               # via kombu
 appdirs==1.4.4            # via fs
-attrs==20.3.0             # via fiona, jsonschema, pytest
+async-timeout==3.0.1      # via aiohttp
+attrs==20.3.0             # via aiohttp, fiona, jsonschema, pytest
 begins==0.9               # via pyfiles
 billiard==3.6.3.0         # via celery
 bonobo==0.6.4             # via terra-bonobo-nodes
@@ -16,7 +18,7 @@ botocore==1.19.31         # via boto3, s3transfer
 cached-property==1.5.2    # via django-url-filter
 celery==5.0.4             # via -r requirements.in, django-geosource, django-geostore
 certifi==2020.12.5        # via elasticsearch, fiona, httpx, requests
-chardet==3.0.4            # via requests
+chardet==3.0.4            # via aiohttp, requests
 click-didyoumean==0.0.3   # via celery
 click-plugins==1.1.1      # via celery, fiona
 click-repl==0.1.6         # via celery
@@ -56,7 +58,7 @@ h11==0.9.0                # via httpcore
 httpcore==0.11.1          # via httpx
 httptools==0.1.1          # via sanic
 httpx==0.15.4             # via sanic
-idna==2.10                # via requests, rfc3986
+idna==2.10                # via requests, rfc3986, yarl
 iniconfig==1.1.1          # via pytest
 jinja2==2.11.2            # via bonobo
 jmespath==0.10.0          # via boto3, botocore
@@ -67,7 +69,7 @@ markupsafe==1.1.1         # via jinja2
 mercantile==1.1.6         # via django-geostore
 mondrian==0.8.1           # via bonobo
 monotonic==1.5            # via eventlet
-multidict==5.0.0          # via sanic
+multidict==5.0.0          # via aiohttp, sanic, yarl
 munch==2.5.0              # via fiona
 packaging==19.2           # via bonobo, pytest
 pbr==5.5.1                # via stevedore
@@ -80,7 +82,7 @@ psycopg2==2.8.6           # via django-geosource, django-geostore, django-terra-
 py==1.9.0                 # via pytest
 pyexcel-io==0.6.4         # via pyexcel
 pyexcel==0.6.6            # via django-geosource
-git+git://github.com/jrmi/pyfiles@d6ec952  # via -r requirements.in
+git+git://github.com/jrmi/pyfiles@master  # via -r requirements.in
 pyjwt==1.7.1              # via djangorestframework-jwt
 pyparsing==2.4.7          # via packaging
 pyrsistent==0.17.3        # via jsonschema
@@ -101,9 +103,10 @@ sniffio==1.2.0            # via httpcore, httpx
 sqlparse==0.4.1           # via django
 stevedore==1.32.0         # via bonobo
 terra-bonobo-nodes==0.5.2  # via -r requirements.in
-terra-layer==0.7.3        # via -r requirements.in
+terra-layer==0.7.4        # via -r requirements.in
 texttable==1.6.3          # via pyexcel
 toml==0.10.2              # via pytest
+typing-extensions==3.7.4.3  # via aiohttp
 ujson==4.0.1              # via sanic
 unidecode==1.1.1          # via python-slugify
 urllib3==1.26.2           # via -r requirements.in, botocore, elasticsearch, requests
@@ -112,6 +115,7 @@ vine==5.0.0               # via amqp, celery
 wcwidth==0.2.5            # via prompt-toolkit
 websockets==8.1           # via sanic
 whistle==1.0.1            # via bonobo
+yarl==1.6.3               # via aiohttp
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

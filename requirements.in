@@ -15,7 +15,7 @@ celery>=5.0.0,<=6.0.0
 raven==6.10.0
 
 # ETL
-git+git://github.com/jrmi/pyfiles@d6ec952
+git+git://github.com/jrmi/pyfiles@master
 
 # webserver
 gunicorn[gevent]>=19.8,<19.9
