@@ -103,7 +103,7 @@ sniffio==1.2.0            # via httpcore, httpx
 sqlparse==0.4.1           # via django
 stevedore==1.32.0         # via bonobo
 terra-bonobo-nodes==0.5.2  # via -r requirements.in
-terra-layer==0.7.4        # via -r requirements.in
+terra-layer==0.7.5        # via -r requirements.in
 texttable==1.6.3          # via pyexcel
 toml==0.10.2              # via pytest
 typing-extensions==3.7.4.3  # via aiohttp
