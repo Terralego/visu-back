@@ -50,6 +50,7 @@ os.environ.setdefault("RELATIVE_SETTINGS_MODULE", "")
 RELATIVE_SETTINGS_MODULE = os.environ.get("RELATIVE_SETTINGS_MODULE")
 
 JWT_AUTH = {
+    "JWT_PAYLOAD_HANDLER": "terra_accounts.jwt_payload.terra_payload_handler",
     "JWT_EXPIRATION_DELTA": timedelta(hours=1),
     "JWT_ALLOW_REFRESH": True,
 }
