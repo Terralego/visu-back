@@ -8,10 +8,6 @@ x-images: # Only to create template
     tty: true
     # image: "${DJANGO_IMAGE}:${DJANGO_IMAGE_VERSION}-dev"
     # latest image is only used in prod (without dev & test tools)
-    build:
-      context: "."
-      args:
-        PY_VER: "${DJANGO_PY_VER:-3.6}"
     depends_on:
       - db
       - redis

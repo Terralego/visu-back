@@ -4,8 +4,14 @@ x-images:
     command: 'sh -c "while true;do echo notstarted;sleep 65000;done"'
     entrypoint: 'sh -c "while true;do echo notstarted;sleep 65000;done"'
     restart: "no"
+  django: &django
+    build:
+      context: "."
+      args:
+        PY_VER: "${DJANGO_PY_VER:-3.6}"
 services:
   django:
+    <<: [*django]
     stdin_open: true
     tty: true
     environment:
@@ -29,6 +35,7 @@ services:
       - "8006:8000"
     build: { context: ".", args: { BUILD_DEV: "y" } }
   celery:
+    <<: [*django]
     environment:
       - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.dev}
     volumes:
@@ -38,6 +45,7 @@ services:
       - ./private:/code/private
       - share:/share/ # To share file between containers
   celerybeat:
+    <<: [*django]
     environment:
       - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.dev}
     volumes:
