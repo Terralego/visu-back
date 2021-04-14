@@ -88,7 +88,7 @@ django-filter==2.4.0
     # via django-geostore
 django-geosource==0.4.11
     # via terra-layer
-django-geostore==0.5.4
+django-geostore==0.5.7
     # via
     #   terra-bonobo-nodes
     #   terra-layer
@@ -100,11 +100,11 @@ django-polymorphic==3.0.0
     # via django-geosource
 django-redis==4.10.0
     # via -r requirements.in
-django-terra-accounts==1.0.2
+django-terra-accounts==1.0.4
     # via
     #   -r requirements.in
     #   terra-layer
-django-terra-settings==1.0.1
+django-terra-settings==1.0.3
     # via
     #   -r requirements.in
     #   django-terra-accounts
