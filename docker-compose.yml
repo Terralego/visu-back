@@ -1,4 +1,4 @@
-version: "3.7"
+version: '3.7'
 x-images: # Only to create template
   django: &django
     env_file: docker.env
@@ -15,7 +15,7 @@ x-images: # Only to create template
     working_dir: /code/src
     command:
       - sh
-      - "-c"
+      - '-c'
       - >-
         :
         && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s}
@@ -27,18 +27,18 @@ x-images: # Only to create template
       - share:/share/ # To share file between containers
 services:
   redis:
-    image: "corpusops/redis:4.0-alpine"
+    image: 'corpusops/redis:4.0-alpine'
     hostname: redis
     volumes:
-      - "redis:/data"
+      - 'redis:/data'
   db:
-    image: "corpusops/pgrouting:10-2.5-2.6"
+    image: 'corpusops/pgrouting:10-2.5-2.6'
     env_file: docker.env
     volumes:
       - postgresql:/var/lib/postgresql/data
   nginx:
     restart: always
-    image: "corpusops/nginx:1.14-alpine"
+    image: 'corpusops/nginx:1.14-alpine'
     env_file: docker.env
     depends_on:
       - django
@@ -60,16 +60,21 @@ services:
   django:
     <<: [*django]
     healthcheck:
-      test:  ["CMD-SHELL", "curl --fail http://localhost:8000/api/settings || exit 1"]
+      test:
+        [
+          'CMD-SHELL',
+          'curl --fail http://localhost:8000/api/settings || exit 1',
+        ]
   celery:
     <<: [*django]
     healthcheck:
-      test:  ["CMD-SHELL", "/code/venv/bin/celery -A project.celery inspect ping"]
+      test:
+        ['CMD-SHELL', '/code/venv/bin/celery -A project.celery inspect ping']
     environment:
       - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.prod}
     command:
       - sh
-      - "-c"
+      - '-c'
       - >-
         :
         && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s}
@@ -79,16 +84,17 @@ services:
   celerybeat:
     <<: [*django]
     healthcheck:
-      test:  ["CMD-SHELL", "/code/venv/bin/celery -A project.celery inspect ping"]
+      test:
+        ['CMD-SHELL', '/code/venv/bin/celery -A project.celery inspect ping']
     environment:
       - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.prod}
     command:
       - sh
-      - "-c"
+      - '-c'
       - >-
         :
         && dockerize -wait http://setup-postgres -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s}
-        && /code/venv/bin/celery  -A project.celery beat --scheduler django_geosource.schedulers.GeosourceScheduler -l INFO
+        && /code/venv/bin/celery  -A project.celery beat -l INFO
     depends_on:
       - django
   elasticsearch:
@@ -100,8 +106,8 @@ services:
     healthcheck:
       test:
         [
-          "CMD-SHELL",
-          "curl --silent --fail localhost:9200/_cluster/health || exit 1",
+          'CMD-SHELL',
+          'curl --silent --fail localhost:9200/_cluster/health || exit 1',
         ]
       interval: 30s
       timeout: 30s
@@ -116,7 +122,7 @@ services:
       - db
     entrypoint:
       - /bin/sh
-      - "-c"
+      - '-c'
       - |-
         set -ex
         POSTGRES_STARTUP_TIMEOUT=$${POSTGRES_STARTUP_TIMEOUT:-120s}
@@ -138,7 +144,7 @@ volumes:
   redis:
   mediafiles:
   statics:
-    name: "visu-back-statics"
+    name: 'visu-back-statics'
     external: false
   logs:
   elasticsearch:
