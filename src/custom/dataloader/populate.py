@@ -46,32 +46,32 @@ TEST_SOURCE_FILES = [
                     }
                 ]
             },
-            "filters": {
-                "layer": "airport",
-                "mainField": None,
-                "fields": [],
-                "form": [
-                    {
-                        "property": "categorie",
-                        "label": "Category",
+            "filters": [
+                {
+                    "property": "nature",
+                    "label": "Nature",
+                    "filter_enable": True,
+                    "order": 0,
+                    "filter_settings":{
                         "type": "many",
-                        "order": 0,
                         "values": [],
                         "fetchValues": True,
                         "proposeValues": "all",
-                    },
-                    {
-                        "property": "statut_du_toponyme",
-                        "label": "Name status",
+                    }
+                },
+                {
+                    "property": "usage",
+                    "label": "Usage",
+                    "filter_enable": True,
+                    "order": 1,
+                    "filter_settings":{
                         "type": "many",
-                        "order": 1,
                         "values": [],
                         "fetchValues": True,
                         "proposeValues": "all",
-                    },
-                ],
-                "exportable": False,
-            },
+                    }
+                },
+            ],
         },
     ),
     ("autoroutes_lines_4326.geojson", "MultiLineString", "fid", "Highway", {}),
@@ -175,6 +175,9 @@ def load_test_source_and_layer():
         source.update_fields()
 
         default_style = get_default_style(geom_name)
+
+        filters = extra_layer_data.pop("filters", None)
+
         layer, _ = Layer.objects.update_or_create(
             source=source,
             name=source.name,
@@ -194,6 +197,14 @@ def load_test_source_and_layer():
                 FilterField.objects.get_or_create(
                     field=field, layer=layer, defaults={"label": field.name}
                 )
+
+        if filters:
+            for new_filter in filters:
+                field = source.fields.get(name=new_filter.pop('property'))
+                FilterField.objects.update_or_create(
+                    field=field, layer=layer, defaults=new_filter
+                )
+
 
         # roughly split the test files between two scenes so both map & story can be tested
         if i < len(TEST_SOURCE_FILES) / 2:
@@ -224,13 +235,11 @@ def create_test_users():
             "email": "admin@terralego.fake",
             "_groups": [],
             "_is_superuser": True,
-            "password": "password",
         },
         {
             "email": "visu@terralego.fake",
             "_groups": [],
             "_is_superuser": False,
-            "password": "password",
         },
     ]
 
@@ -239,7 +248,7 @@ def create_test_users():
         is_superuser = user_data.get("_is_superuser")
 
         # Common properties
-        user_data["password"] = "visu"
+        user_data["password"] = "password"
 
         fields = {k: v for k, v in user_data.items() if not k.startswith("_")}
 
@@ -259,4 +268,4 @@ def create_test_users():
                     groups[groupname], _ = Group.objects.get_or_create(name=groupname)
                 user.groups.add(groups[groupname])
 
-    print("Users ok !")
+    print("Users ok! You can connect as admin with `admin@terralego.fake` - `password`")
