@@ -99,7 +99,7 @@ services:
       - django
   elasticsearch:
     hostname: elasticsearch
-    image: elasticsearch:7.9.1
+    image: elasticsearch:7.16.2
     env_file: docker.env
     environment:
       ES_JAVA_OPTS: ${ES_JAVA_OPTS:--Xms1g -Xmx1g}
