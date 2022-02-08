@@ -36,3 +36,6 @@ xlrd==1.2.0               # via -r requirements-dev.in
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
+
+# quick "dirty" add, pip-tools not working correctly (no time to clean the mess)
+pip-tools

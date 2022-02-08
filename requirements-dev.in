@@ -10,3 +10,4 @@ pdb_clone
 
 xlrd
 black
+pip-tools
