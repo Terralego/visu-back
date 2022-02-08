@@ -28,6 +28,8 @@ services:
       - ./lib:/code/lib
       - ./tox.ini:/code/tox.ini
       - ./.tox:/code/.tox
+      - ./requirements.in:/code/requirements.in
+      - ./requirements-dev.in:/code/requirements-dev.in
       - ./requirements.txt:/code/requirements.txt
       - ./requirements-dev.txt:/code/requirements-dev.txt
       - share:/share/ # To share file between containers
