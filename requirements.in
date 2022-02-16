@@ -2,7 +2,7 @@ Django>=2.2.11,<3.0
 django-redis>=4.10,<4.11
 
 terra-layer>=0.7,<0.8
-terra-bonobo-nodes>=0.5.1
+terra-bonobo-nodes>=0.6
 elasticsearch>=7,<8
 django-terra-accounts
 django-terra-settings
