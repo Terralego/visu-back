@@ -40,11 +40,10 @@ RUN bash -c 'set -ex \
   && cd /code \
   && gosu django:django bash -c "python3.8 -m venv venv \
   && venv/bin/pip install -U --no-cache-dir setuptools wheel pip \
-  && venv/bin/pip install -U --no-cache-dir -r ./requirements.txt \
   && if [[ -n "$BUILD_DEV" ]];then \
   venv/bin/pip install -U --no-cache-dir -r ./requirements-dev.txt;\
   else \
-  -r ./requirements.txt; \
+  venv/bin/pip install -U --no-cache-dir -r ./requirements.txt; \
   fi \
   && mkdir -p public/static public/media"'
 
