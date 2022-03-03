@@ -1,10 +1,10 @@
-ARG BASE=corpusops/ubuntu-bare:bionic
+ARG BASE=corpusops/ubuntu-bare:focal
 FROM $BASE
 ENV PYTHONUNBUFFERED 1
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
 ARG BUILD_DEV=y
-ARG PY_VER=3.6
+ARG PY_VER=3.8
 # See https://github.com/nodejs/docker-node/issues/380
 ARG GPG_KEYS=B42F6819007F00F88E364FD4036A9C25BF357DD4
 ARG GPG_KEYS_SERVERS="hkp://p80.pool.sks-keyservers.net:80 hkp://ipv4.pool.sks-keyservers.net hkp://pgp.mit.edu:80"
@@ -38,13 +38,13 @@ RUN bash -c 'set -ex \
   && chown django:django -R /code \
   && chown django:django /share/tmp \
   && cd /code \
-  && gosu django:django bash -c "python${PY_VER} -m venv venv \
-  && venv/bin/pip install -U --no-cache-dir setuptools wheel \
+  && gosu django:django bash -c "python3.8 -m venv venv \
+  && venv/bin/pip install -U --no-cache-dir setuptools wheel pip \
   && venv/bin/pip install -U --no-cache-dir -r ./requirements.txt \
   && if [[ -n "$BUILD_DEV" ]];then \
-  venv/bin/pip install -U --no-cache-dir \
-  -r ./requirements.txt \
-  -r ./requirements-dev.txt;\
+  venv/bin/pip install -U --no-cache-dir -r ./requirements-dev.txt;\
+  else \
+  -r ./requirements.txt; \
   fi \
   && mkdir -p public/static public/media"'
 
