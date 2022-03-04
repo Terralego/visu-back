@@ -86,7 +86,7 @@ django-db-geventpool==3.1.0
     # via -r requirements.in
 django-filter==2.4.0
     # via django-geostore
-django-geosource==0.5.2
+django-geosource==0.5.3
     # via terra-layer
 django-geostore==0.5.7
     # via
@@ -100,7 +100,7 @@ django-polymorphic==3.0.0
     # via django-geosource
 django-redis==4.10.0
     # via -r requirements.in
-django-terra-accounts==1.0.4
+django-terra-accounts==1.0.7
     # via
     #   -r requirements.in
     #   terra-layer
