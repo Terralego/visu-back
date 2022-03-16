@@ -17,7 +17,7 @@ raven==6.10.0
 sentry-sdk
 
 # ETL
-git+git://github.com/jrmi/pyfiles@master
+git+https://github.com/Terralego/pyfiles@master
 
 # webserver
 gunicorn[gevent]>=19.8,<19.9

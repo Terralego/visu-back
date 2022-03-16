@@ -249,7 +249,7 @@ pyexcel-io==0.6.4
     # via pyexcel
 pyexcel==0.6.6
     # via django-geosource
-git+git://github.com/jrmi/pyfiles@master
+git+https://github.com/Terralego/pyfiles@master
     # via -r requirements.in
 pyjwt==1.7.1
     # via djangorestframework-jwt
