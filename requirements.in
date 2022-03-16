@@ -16,7 +16,7 @@ celery>=5.0.0,<=6.0.0
 sentry-sdk
 
 # ETL
-git+https://github.com/Terralego/pyfiles@master
+git+https://github.com/Terralego/pyfiles@submarcos-patch-1#egg=pyfiles
 
 # webserver
 gunicorn[gevent]>=19.8
