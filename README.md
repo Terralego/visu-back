@@ -7,6 +7,7 @@
 
 <div align="center">
 
+  [![Build](https://github.com/Terralego/visu-back/actions/workflows/docker-image.yml/badge.svg)]()
   [![Status](https://img.shields.io/badge/status-active-success.svg)]()
   [![GitHub Issues](https://img.shields.io/github/issues/terralego/visu-back.svg)](https://github.com/terralego/visu-back/issues)
   [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/terralego/visu-back.svg)](https://github.com/terralego/visu-back//pulls)
