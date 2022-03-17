@@ -22,6 +22,8 @@ USE_TZ = True
 
 INSTALLED_APPS = (
     "terra_settings",
+    "django.contrib.admin",
+    "django.contrib.messages",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -193,3 +195,53 @@ PYFILES_OPTIONS = {
 
 
 STORAGE_NAMESPACE = "VISU:datas"
+
+
+import ldap
+from django_auth_ldap.config import LDAPSearch, LDAPGroupQuery,GroupOfNamesType,PosixGroupType
+
+AUTHENTICATION_BACKENDS = ["django_auth_ldap.backend.LDAPBackend"]
+
+
+AUTH_LDAP_SERVER_URI = "ldap://ldap"
+
+
+AUTH_LDAP_CACHE_GROUPS = False
+# #
+# AUTH_LDAP_USER_SEARCH = LDAPSearch('ou=users,dc=example,dc=org', ldap.SCOPE_SUBTREE, '(uid=%(user)s)')
+# AUTH_LDAP_BIND_DN = 'cn=admin,dc=example,dc=org'
+# AUTH_LDAP_BIND_PASSWORD = 'admin'
+
+# AUTH_LDAP_GROUP_SEARCH = LDAPSearch('ou=groups,dc=example,dc=org', ldap.SCOPE_SUBTREE, '(objectClass=posixGroup)')
+#
+AUTH_LDAP_USER_ATTR_MAP = {
+    "is_active": True,
+    "is_staff": True,
+    "first_name": "givenName",
+    "last_name": "sn",
+    "email": "uid",
+    "username": "uid",
+    "password": "userPassword",
+}
+
+# AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+#    "is_active": "cn=active,dc=example,dc=org",
+#    "is_staff": "cn=staff,dc=example,dc=org",
+#    "is_superuser": "cn=staff,dc=example,dc=org",
+# }
+# AUTH_LDAP_GROUP_TYPE = PosixGroupType(name_attr="cn")
+# AUTH_LDAP_MIRROR_GROUPS = True
+# # This is the default, but I like to be explicit.
+# AUTH_LDAP_ALWAYS_UPDATE_USER = True
+
+# # Use LDAP group membership to calculate group permissions.
+# AUTH_LDAP_FIND_GROUP_PERMS = True
+
+AUTH_LDAP_USER_DN_TEMPLATE = "uid=%(user)s,ou=users,dc=example,dc=org"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "loggers": {"django_auth_ldap": {"level": "DEBUG", "handlers": ["console"]}},
+}

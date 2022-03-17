@@ -139,6 +139,21 @@ services:
         set -x \
         && dockerize -wait file://$$flag -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s} \
         && while true;do printf "HTTP/1.1 200 OK\n\nstarted"| ( nc -l -p 80 || /bin/true);done
+
+  ldap:
+    image: "osixia/openldap:1.1.8"
+    volumes:
+      - ldap-data:/var/lib/ldap
+      - ldap-config:/etc/ldap/slapd.d
+  ldap-ui:
+    image: "osixia/phpldapadmin:0.9.0"
+    depends_on:
+      - ldap
+    environment:
+      - PHPLDAPADMIN_LDAP_HOSTS=ldap
+    ports:
+      - "4443:443"
+
 volumes:
   postgresql:
   redis:
@@ -150,3 +165,5 @@ volumes:
   elasticsearch:
   cache:
   share:
+  ldap-data:
+  ldap-config:

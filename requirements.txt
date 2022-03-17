@@ -349,3 +349,4 @@ yarl==1.6.3
 
 # quick "dirty" add, pip-tools not working correctly (no time to clean the mess)
 sentry-sdk
+django-auth-ldap
