@@ -4,6 +4,11 @@ CHANGELOG
 1.0.4+dev  (XXXX-XX-XX)
 -----------------------
 
+**Maintenance**
+
+ * Upgrade django-geostore from 0.5.7 to 0.6.8
+
+
 1.0.4      (2022-03-15)
 -----------------------
 
