@@ -88,7 +88,7 @@ django-filter==2.4.0
     # via django-geostore
 django-geosource==0.5.3
     # via terra-layer
-django-geostore==0.5.7
+django-geostore==0.6.8
     # via
     #   terra-bonobo-nodes
     #   terra-layer
