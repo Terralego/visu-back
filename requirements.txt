@@ -311,7 +311,8 @@ stevedore==1.32.0
     # via bonobo
 terra-bonobo-nodes==0.5.6
     # via -r requirements.in
-terra-layer==0.7.10
+# terra-layer==0.7.10
+git+https://github.com/Terralego/terra-layer@customStyle-per-layer
     # via -r requirements.in
 texttable==1.6.3
     # via pyexcel
