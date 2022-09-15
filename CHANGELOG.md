@@ -1,8 +1,11 @@
 CHANGELOG
 =========
 
-1.0.5+dev  (XXXX-XX-XX)
+1.0.6      (2022-09-15)
 -----------------------
+
+ * Upgrade terra-layer to 0.7.12
+ * Freeze uploov version to be < 0.15 to ensure python3.6 compat
 
 
 1.0.5      (2022-07-04)
