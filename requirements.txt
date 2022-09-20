@@ -14,32 +14,19 @@ amqp==5.0.2
     # via kombu
 appdirs==1.4.4
     # via fs
-async-timeout==3.0.1
-    # via aiohttp
 attrs==20.3.0
     # via
-    #   aiohttp
     #   fiona
     #   jsonschema
     #   pytest
-begins==0.9
-    # via
-    #   bygfiles
-    #   pyfiles
 billiard==3.6.3.0
     # via celery
 bonobo==0.6.4
     # via terra-bonobo-nodes
-boto3==1.16.31
+bygfiles @ git+https://github.com/Terralego/pyfiles@master
     # via
-    #   bygfiles
-    #   pyfiles
-botocore==1.19.31
-    # via
-    #   boto3
-    #   s3transfer
-bygfiles==0.1.1
-    # via terra-bonobo-nodes
+    #   -r requirements.in
+    #   terra-bonobo-nodes
 cached-property==1.5.2
     # via django-url-filter
 celery==5.0.4
@@ -51,7 +38,6 @@ certifi==2020.12.5
     # via
     #   elasticsearch
     #   fiona
-    #   httpx
     #   requests
     #   sentry-sdk
 chardet==3.0.4
@@ -102,11 +88,9 @@ django-cors-headers==2.5.3
     # via -r requirements.in
 django-db-geventpool==3.1.0
     # via -r requirements.in
-django-filter==2.4.0
-    # via django-geostore
 django-geosource==0.5.3
     # via terra-layer
-django-geostore==0.5.7
+django-geostore==0.6.8
     # via
     #   terra-bonobo-nodes
     #   terra-layer
@@ -173,27 +157,18 @@ greenlet==0.4.17
     #   gevent
 gunicorn[gevent]==19.8.1
     # via -r requirements.in
-h11==0.9.0
-    # via httpcore
-httpcore==0.11.1
-    # via httpx
-httptools==0.1.1
-    # via sanic
-httpx==0.15.4
-    # via sanic
 idna==2.10
+    # via requests
+importlib-metadata==4.8.3
     # via
-    #   requests
-    #   rfc3986
-    #   yarl
+    #   jsonschema
+    #   kombu
+    #   pluggy
+    #   pytest
 iniconfig==1.1.1
     # via pytest
 jinja2==2.11.2
     # via bonobo
-jmespath==0.10.0
-    # via
-    #   boto3
-    #   botocore
 jsonschema==3.2.0
     # via
     #   django-geostore
@@ -212,11 +187,6 @@ mondrian==0.8.1
     # via bonobo
 monotonic==1.5
     # via eventlet
-multidict==5.0.0
-    # via
-    #   aiohttp
-    #   sanic
-    #   yarl
 munch==2.5.0
     # via fiona
 packaging==19.2
@@ -226,9 +196,7 @@ packaging==19.2
 pbr==5.5.1
     # via stevedore
 pillow==8.0.1
-    # via
-    #   django-geostore
-    #   terra-layer
+    # via terra-layer
 pluggy==0.13.1
     # via pytest
 prompt-toolkit==3.0.8
@@ -260,8 +228,6 @@ pyrsistent==0.17.3
     # via jsonschema
 pytest==6.1.2
     # via terra-bonobo-nodes
-python-dateutil==2.8.1
-    # via botocore
 python-magic==0.4.18
     # via django-terra-settings
 python-slugify==1.2.6
@@ -286,7 +252,7 @@ sanic==20.9.1
     # via
     #   bygfiles
     #   pyfiles
-sentry-sdk==1.5.7
+sentry-sdk==1.9.8
     # via -r requirements.in
 simplekml==1.3.5
     # via django-geostore
@@ -300,19 +266,14 @@ six==1.15.0
     #   jsonschema
     #   munch
     #   packaging
-    #   python-dateutil
     #   stevedore
-sniffio==1.2.0
-    # via
-    #   httpcore
-    #   httpx
 sqlparse==0.4.1
     # via django
 stevedore==1.32.0
     # via bonobo
 terra-bonobo-nodes==0.5.6
     # via -r requirements.in
-terra-layer==0.7.10
+terra-layer==0.7.12
     # via -r requirements.in
 texttable==1.6.3
     # via pyexcel
@@ -320,31 +281,29 @@ toml==0.10.2
     # via pytest
 typing-extensions==4.1.1
     # via aiohttp
+    # via importlib-metadata
 ujson==4.0.1
     # via sanic
 unidecode==1.1.1
     # via python-slugify
-urllib3==1.26.2
+urllib3==1.26.12
     # via
     #   -r requirements.in
-    #   botocore
     #   elasticsearch
     #   requests
     #   sentry-sdk
 uvloop==0.14.0
-    # via sanic
+    # via -r requirements.in
 vine==5.0.0
     # via
     #   amqp
     #   celery
 wcwidth==0.2.5
     # via prompt-toolkit
-websockets==8.1
-    # via sanic
 whistle==1.0.1
     # via bonobo
-yarl==1.6.3
-    # via aiohttp
+zipp==3.6.0
+    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
