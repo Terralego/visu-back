@@ -8,7 +8,7 @@ x-images:
     build:
       context: "."
       args:
-        PY_VER: "${DJANGO_PY_VER:-3.6}"
+        PY_VER: "${DJANGO_PY_VER:-3.8}"
 services:
   django:
     <<: [*django]

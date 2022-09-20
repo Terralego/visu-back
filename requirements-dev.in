@@ -1,10 +1,11 @@
-# development
-django-extensions>=2.0,<2.1
-tox>=3.7.0,<3.8
-coverage>=4.5,<4.6
-isort>=4.3,<4.4
-pylama>=7.6,<7.7
-eradicate>=1.0,<1.1
+-c requirements.txt
+
+django-extensions>=2.0
+tox>=3.7.0
+coverage>=4.5
+isort>=4.3
+pylama>=7.6
+eradicate>=1.0
 tblib
 pdb_clone
 
