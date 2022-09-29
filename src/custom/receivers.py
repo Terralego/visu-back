@@ -31,11 +31,11 @@ def refresh_es(sender, **kwargs):
         # Postgres needs to vacuun and reindex
         try:
             conn = psycopg2.connect(
-                user=database['USER'],
-                password=database['PASSWORD'],
-                port=database['PORT'],
-                dbname=database['NAME'],
-                host=database['HOST'],
+                user=database["USER"],
+                password=database["PASSWORD"],
+                port=database["PORT"],
+                dbname=database["NAME"],
+                host=database["HOST"],
             )
         except psycopg2.OperationalError:
             logger.info("Database maintenance failed !")
@@ -46,7 +46,7 @@ def refresh_es(sender, **kwargs):
             cursor = conn.cursor()
             cursor.execute("VACUUM ANALYZE")
             cursor.execute("VACUUM FULL")
-            cursor.execute("REINDEX DATABASE db")
+            cursor.execute(f"REINDEX DATABASE {database['NAME']}")
             cursor.close()
             conn.close()
 
