@@ -18,6 +18,8 @@ SECURE_SSL_REDIRECT = False
 STATICFILES_DIRS = []
 MEDIA_ACCEL_REDIRECT = False
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 try:
     from .local import *  # noqa
