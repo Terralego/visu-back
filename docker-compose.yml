@@ -138,7 +138,7 @@ services:
         );then touch $$flag && break;fi;done )&
         set -x \
         && dockerize -wait file://$$flag -timeout $${POSTGRES_STARTUP_TIMEOUT:-120s} \
-        && while true;do printf "HTTP/1.1 200 OK\n\nstarted"| ( nc -l -p 80 || /bin/true);done
+        && while true;do printf "HTTP/1.1 200 OK\nContent-Length: 8\n\nstarted"| ( busybox nc -l -p 80 || /bin/true );done
 volumes:
   postgresql:
   redis:
